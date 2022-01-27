@@ -174,12 +174,10 @@ export default {
       }
     },
     async register() {
-      console.log("yes");
       const valid = this.$refs.form2.validate();
       if (!valid) return;
       try {
         await this.api.post("/users", this.form2);
-        console.log("yes2");
         // this.$router.push("/login");
       } catch (error) {
         console.log(error);
