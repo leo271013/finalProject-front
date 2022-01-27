@@ -23,6 +23,24 @@ const routes = [
       title: "關於我們 | Swapper",
     },
   },
+  {
+    path: "/grouppage",
+    name: "grouppage",
+    component: () =>
+      import(/* webpackChunkName: "grouppage" */ "../views/GroupPage.vue"),
+    meta: {
+      title: "團體募集 | Swapper",
+    },
+  },
+  {
+    path: "/memberpage",
+    name: "memberpage",
+    component: () =>
+      import(/* webpackChunkName: "memberpage" */ "../views/MemberPage.vue"),
+    meta: {
+      title: "會員專區 | Swapper",
+    },
+  },
 ];
 
 const router = new VueRouter({

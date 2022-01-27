@@ -5,6 +5,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueToggles from "vue-toggles";
+import "./plugins/axios.js";
 
 Vue.component("VueToggles", VueToggles);
 
