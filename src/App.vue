@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <div class="px-16 pt-16">
-      <v-app-bar elevation="0" color="transparent" class="px-16">
-        <router-link to="/"
+    <div class="px-xl-16 pt-16">
+      <v-app-bar flat color="transparent" class="mx-xl-16 px-16">
+        <router-link to="/" :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
           ><img src="~./assets/logo.png" alt="logo" contain height="150"
         /></router-link>
         <v-tabs
@@ -10,9 +10,8 @@
           mobile-breakpoint
           right
           color="amber darken-4"
-          slider-size="1"
+          hide-slider
           show-arrows
-          background-color="transparent"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
@@ -48,6 +47,7 @@
               v-model="valid"
               lazy-validation
               v-show="logining"
+              @submit.prevent="login"
             >
               <v-text-field
                 v-model="form.account"
@@ -108,7 +108,7 @@
                 rounded
                 color="orange"
                 class="ma-4"
-                @click="accountvalidate, register"
+                @click="accountvalidate2"
                 type="submit"
               >
                 註冊
@@ -131,7 +131,17 @@
           class="ml-12 pr-12"
         />
       </v-app-bar>
-      <v-main class="px-16 mt-16">
+      <v-main class="px-16 mt-8">
+        <hr
+          style="
+            border: 1px solid;
+            width: 75%;
+            margin: auto;
+            margin-top: 40px;
+            border-image: linear-gradient(90deg, #f44336, #ff9800, #f44336) 30
+              30;
+          "
+        />
         <router-view />
       </v-main>
     </div>
@@ -163,6 +173,8 @@ export default {
   methods: {
     accountvalidate() {
       this.$refs.form.validate();
+    },
+    accountvalidate2() {
       this.$refs.form2.validate();
     },
     turnOn() {
@@ -178,7 +190,17 @@ export default {
       if (!valid) return;
       try {
         await this.api.post("/users", this.form2);
-        // this.$router.push("/login");
+        alert("註冊成功囉");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async login() {
+      const valid = this.$refs.form.validate();
+      if (!valid) return;
+      try {
+        await this.api.post("/users/login", this.form);
+        alert("登入成功囉");
       } catch (error) {
         console.log(error);
       }
