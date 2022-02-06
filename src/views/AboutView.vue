@@ -1,5 +1,25 @@
 <template>
   <div class="about">
-    <h1>vuetify好難</h1>
+    <v-row class="ma-16 pa-16">
+      <v-col
+        ><img
+          src="~../assets/logo.png"
+          :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
+      /></v-col>
+      <v-col>
+        <h1 class="text-h3 text-center mb-12">關於我們</h1>
+        <p class="text-h5">「Swapper 絲滑易物」 為一手、二手物品的交流平台</p>
+        <p class="text-h5">
+          用戶在上架時可選擇贈送，或是根據自身需求要求以物易物
+        </p>
+        <p class="text-h5">注重使用者之間的交流，由雙方決定商品的價值</p>
+        <p class="text-center text-h5 mt-16 font-italic font-weight-regular">
+          「你眼中的垃圾，可能是別人眼中的寶貝」
+        </p>
+        <p class="text-center text-h4 mt-8">
+          聯絡管理員: <a href="mailto:aabbcc@gmail.com">aabbcc@gmail.com</a>
+        </p></v-col
+      >
+    </v-row>
   </div>
 </template>

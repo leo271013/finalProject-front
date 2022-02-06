@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <div class="px-xl-16 pt-16">
-      <v-app-bar flat color="transparent" class="mx-xl-16 px-16">
+    <div id="bg" class="px-xl-16 pt-16">
+      <v-app-bar flat fixed color="transparent" class="pa-16">
         <router-link to="/" :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
           ><img src="~./assets/logo.png" alt="logo" contain height="150"
         /></router-link>
@@ -14,6 +14,9 @@
           show-arrows
         >
           <v-tabs-slider></v-tabs-slider>
+          <v-tab class="px-6" to="/productpage">
+            <h2>商品頁(測試用)</h2>
+          </v-tab>
           <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
           <v-tab class="px-6" to="/grouppage"> <h2>團體募集</h2> </v-tab>
           <v-tab class="px-6" to="/memberpage"> <h2>會員專區</h2> </v-tab>
@@ -70,7 +73,7 @@
                 rounded
                 color="orange"
                 class="ma-4"
-                @click="accountvalidate"
+                @click="accountvalidate, (dialog = false)"
                 type="submit"
               >
                 登入
@@ -131,17 +134,8 @@
           class="ml-12 pr-12"
         />
       </v-app-bar>
-      <v-main class="px-16 mt-8">
-        <hr
-          style="
-            border: 1px solid;
-            width: 75%;
-            margin: auto;
-            margin-top: 40px;
-            border-image: linear-gradient(90deg, #f44336, #ff9800, #f44336) 30
-              30;
-          "
-        />
+      <!-- <hr class="line" /> -->
+      <v-main class="my-16 px-16">
         <router-view />
       </v-main>
     </div>
@@ -169,6 +163,7 @@ export default {
     passwordRules: [(v) => !!v || "請輸入密碼"],
     isToggled: false,
     logining: true,
+    dialog: false,
   }),
   methods: {
     accountvalidate() {
@@ -191,6 +186,7 @@ export default {
       try {
         await this.api.post("/users", this.form2);
         alert("註冊成功囉");
+        this.logining = true;
       } catch (error) {
         console.log(error);
       }
@@ -208,4 +204,17 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#bg {
+  height: 100vh;
+  background: url("~./assets/new.png") no-repeat top/cover;
+  overflow-y: auto;
+}
+.line {
+  border: 3px solid;
+  margin-top: 60px;
+  margin-left: 220px;
+  margin-right: 140px;
+  border-image: linear-gradient(90deg, #ff9800, #f44336) 30 30;
+}
+</style>

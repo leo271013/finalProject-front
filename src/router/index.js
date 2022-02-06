@@ -40,6 +40,59 @@ const routes = [
     meta: {
       title: "會員專區 | Swapper",
     },
+    children: [
+      {
+        path: "",
+        name: "memberinfo",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberpage" */ "../views/MemberInfo.vue"
+          ),
+        meta: {
+          title: "會員專區 | 購物網",
+        },
+      },
+      {
+        path: "memberpost",
+        name: "memberpost",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberpage" */ "../views/MemberPost.vue"
+          ),
+        meta: {
+          title: "商品刊登 | 購物網",
+        },
+      },
+      {
+        path: "postedit",
+        name: "postedit",
+        component: () =>
+          import(/* webpackChunkName: "memberpage" */ "../views/PostEdit.vue"),
+        meta: {
+          title: "商品管理 | 購物網",
+        },
+      },
+      {
+        path: "membermessage",
+        name: "membermessage",
+        component: () =>
+          import(
+            /* webpackChunkName: "memberpage" */ "../views/MemberMessage.vue"
+          ),
+        meta: {
+          title: "訊息 | 購物網",
+        },
+      },
+    ],
+  },
+  {
+    path: "/productpage",
+    name: "productpage",
+    component: () =>
+      import(/* webpackChunkName: "productpage" */ "../views/ProductPage.vue"),
+    meta: {
+      title: "測試頁 | Swapper",
+    },
   },
 ];
 

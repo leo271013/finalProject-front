@@ -3,8 +3,8 @@
     <v-row class="mt-8 mx-16">
       <v-col :cols="1">
         <template>
-          <v-card flat max-width="100">
-            <v-list flat tile class="pa-0 text-center">
+          <v-card max-width="100" class="mt-16 transparent">
+            <v-list flat tile class="text-center transparent">
               <v-list-item-group mandatory color="red">
                 <div v-for="(item, i) in items" :key="i">
                   <v-list-item class="mb-0">
@@ -25,7 +25,7 @@
               label="搜尋"
               clearable="true"
               v-model="searchtext"
-              color="gray"
+              color="orange"
             >
               <v-btn
                 height="22"
@@ -35,6 +35,7 @@
                 @click="search"
                 plain
                 class="mx-2"
+                color="orange"
               >
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
@@ -46,7 +47,7 @@
                 <template>
                   <v-card
                     :loading="loading"
-                    class="mx-auto my-12"
+                    class="mx-auto"
                     max-width="374"
                     hover
                   >
@@ -65,7 +66,7 @@
 
                     <v-card-title>Cafe Badilico</v-card-title>
 
-                    <v-card-text>
+                    <!-- <v-card-text>
                       <v-row align="center" class="mx-0">
                         <v-rating
                           :value="4.5"
@@ -115,7 +116,7 @@
                       >
                         Reserve
                       </v-btn>
-                    </v-card-actions>
+                    </v-card-actions> -->
                   </v-card>
                 </template></v-col
               >
