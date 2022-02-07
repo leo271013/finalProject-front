@@ -28,7 +28,7 @@
       <v-row>
         <v-col>
           <template>
-            <v-card flat class="mx-auto">
+            <v-card flat class="mx-auto transparent">
               <v-card-title class="text-h4">商品介紹</v-card-title>
               <v-card flat class="mx-auto" width="600">
                 <v-carousel
@@ -62,6 +62,7 @@
           </template>
         </v-col>
       </v-row>
+      <div class="wow bounceInUp">我是大變</div>
     </div>
   </div>
 </template>

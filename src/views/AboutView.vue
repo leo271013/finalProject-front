@@ -1,8 +1,12 @@
 <template>
   <div class="about">
     <v-row class="ma-16 pa-16">
-      <v-col
+      <v-col class="pa-12"
         ><img
+          src="~../assets/chtLogo.png"
+          :style="'filter: drop-shadow(2px 2px 1.5px gray)'" /><img
+          class="ml-12"
+          width="400"
           src="~../assets/logo.png"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
       /></v-col>
@@ -17,7 +21,7 @@
           「你眼中的垃圾，可能是別人眼中的寶貝」
         </p>
         <p class="text-center text-h4 mt-8">
-          聯絡管理員: <a href="mailto:aabbcc@gmail.com">aabbcc@gmail.com</a>
+          聯絡管理員: <a href="mailto:majaja@gmail.com">majaja@gmail.com</a>
         </p></v-col
       >
     </v-row>

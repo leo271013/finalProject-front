@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="bg" class="px-xl-16 pt-16">
-      <v-app-bar flat fixed color="transparent" class="pa-16">
+      <v-app-bar flat fixed height="150" color="red" class="px-16">
         <router-link to="/" :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
           ><img src="~./assets/logo.png" alt="logo" contain height="150"
         /></router-link>
@@ -198,7 +198,7 @@ export default {
         await this.api.post("/users/login", this.form);
         alert("登入成功囉");
       } catch (error) {
-        console.log(error);
+        alert("登入失敗");
       }
     },
   },
@@ -206,9 +206,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 #bg {
-  height: 100vh;
-  background: url("~./assets/new.png") no-repeat top/cover;
-  overflow-y: auto;
+  height: 100%;
+  background: url("~./assets/new.png") fixed no-repeat top/cover;
 }
 .line {
   border: 3px solid;

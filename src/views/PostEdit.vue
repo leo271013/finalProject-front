@@ -32,7 +32,7 @@
             class="mr-8"
           />
           <v-list-item-content>
-            <v-list-item-title>小雞吃米圖</v-list-item-title>
+            <v-list-item-title class="text-h6">小雞吃米圖</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn outlined color="light-green" class="mt-3"> 編輯 </v-btn>
@@ -49,7 +49,7 @@
             class="mr-8"
           />
           <v-list-item-content>
-            <v-list-item-title>古靈精怪槍</v-list-item-title>
+            <v-list-item-title class="text-h6">古靈精怪槍</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn outlined color="light-green" class="mt-3"> 編輯 </v-btn>

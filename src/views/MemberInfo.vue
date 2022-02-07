@@ -9,12 +9,17 @@
       ></v-col>
       <v-col>
         <h1 v-show="!edit">
-          會員名稱:{{ name }}
+          會員名稱:<br />{{ name }}
           <v-btn text small fab dark color="cyan" @click="edit = true">
             <v-icon dark> mdi-pencil </v-icon>
           </v-btn>
         </h1>
-        <v-text-field v-show="edit" :rules="rules" v-model="name">
+        <v-text-field
+          v-show="edit"
+          :rules="rules"
+          v-model="name"
+          @keyup.enter="edit = false"
+        >
           <v-btn
             height="22"
             width="22"

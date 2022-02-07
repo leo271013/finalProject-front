@@ -26,6 +26,7 @@
               clearable="true"
               v-model="searchtext"
               color="orange"
+              @keyup.enter="search"
             >
               <v-btn
                 height="22"
