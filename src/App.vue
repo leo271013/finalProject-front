@@ -1,28 +1,19 @@
 <template>
   <v-app>
-    <div id="bg" class="px-xl-16 pt-16">
-      <v-app-bar flat fixed height="150" color="red" class="px-16">
-        <router-link to="/" :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
-          ><img src="~./assets/logo.png" alt="logo" contain height="150"
+    <div id="bg" class="px-xl-16 pt-10">
+      <v-app-bar
+        flat
+        fixed
+        src="~./assets/navbar2.png"
+        height="150"
+        color="transparent"
+      >
+        <router-link
+          class="ml-16"
+          to="/"
+          :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
+          ><img src="~./assets/logo.png" alt="logo" contain height="145"
         /></router-link>
-        <v-tabs
-          id="tab"
-          mobile-breakpoint
-          right
-          color="amber darken-4"
-          hide-slider
-          show-arrows
-        >
-          <v-tabs-slider></v-tabs-slider>
-          <v-tab class="px-6" to="/productpage">
-            <h2>商品頁(測試用)</h2>
-          </v-tab>
-          <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
-          <v-tab class="px-6" to="/grouppage"> <h2>團體募集</h2> </v-tab>
-          <v-tab class="px-6" to="/memberpage"> <h2>會員專區</h2> </v-tab>
-          <v-tab class="px-6" to="/about"> <h2>關於我們</h2> </v-tab>
-        </v-tabs>
-        <v-spacer></v-spacer>
 
         <v-dialog
           v-model="dialog"
@@ -30,16 +21,33 @@
           :max-width="'30vh'"
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              outlined
-              icon
-              v-bind="attrs"
-              v-on="on"
-              color="pink"
-              class="ml-12"
+            <v-tabs
+              id="tab"
+              mobile-breakpoint
+              right
+              color="light-blue"
+              hide-slider
+              show-arrows
+              light
+              height="80"
+              class="mt-16"
             >
-              <v-icon>mdi-account</v-icon>
-            </v-btn>
+              <v-tabs-slider></v-tabs-slider>
+              <v-tab class="px-6" to="/productpage">
+                <h2>商品頁(測試用)</h2>
+              </v-tab>
+              <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
+              <v-tab class="px-6" to="/grouppage">
+                <h2>團體募集</h2>
+              </v-tab>
+              <v-tab class="px-6" v-bind="attrs" v-on="on" v-if="!user.isLogin">
+                <h2>會員登入</h2>
+              </v-tab>
+              <v-tab class="px-6" v-if="user.isLogin" to="/memberpage">
+                <h2>會員專區</h2>
+              </v-tab>
+              <v-tab class="px-6" to="/about"> <h2>關於我們</h2> </v-tab>
+            </v-tabs>
           </template>
 
           <v-card class="pa-8 text-center">
@@ -123,6 +131,39 @@
             </v-form>
           </v-card>
         </v-dialog>
+        <v-spacer></v-spacer>
+
+        <template v-if="user.isLogin">
+          <div class="text-center">
+            <v-menu
+              bottom
+              offset-y
+              :close-on-click="true"
+              :close-on-content-click="true"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  outlined
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="pink"
+                  class="ml-8"
+                >
+                  <v-icon>mdi-account</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item-group>
+                  <v-list-item v-for="(list, index) in lists" :key="index">
+                    <v-list-item-title>{{ lists[index] }}</v-list-item-title>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
+          </div>
+        </template>
         <VueToggles
           :value="isToggled"
           @click="turnOn"
@@ -130,7 +171,7 @@
           checked-text=" 🌛 "
           unchecked-text=" 🌞 "
           checkedBg="blue"
-          uncheckedBg="orange"
+          uncheckedBg="white"
           class="ml-12 pr-12"
         />
       </v-app-bar>
@@ -164,6 +205,7 @@ export default {
     isToggled: false,
     logining: true,
     dialog: false,
+    lists: ["商品上架", "會員登出"],
   }),
   methods: {
     accountvalidate() {
@@ -191,15 +233,13 @@ export default {
         console.log(error);
       }
     },
-    async login() {
-      const valid = this.$refs.form.validate();
-      if (!valid) return;
-      try {
-        await this.api.post("/users/login", this.form);
-        alert("登入成功囉");
-      } catch (error) {
-        alert("登入失敗");
-      }
+    login() {
+      this.$store.dispatch("login", this.form);
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.getters.user;
     },
   },
 };
@@ -207,7 +247,7 @@ export default {
 <style lang="scss" scoped>
 #bg {
   height: 100%;
-  background: url("~./assets/new.png") fixed no-repeat top/cover;
+  background: url("~./assets/test.png") fixed no-repeat top/cover;
 }
 .line {
   border: 3px solid;

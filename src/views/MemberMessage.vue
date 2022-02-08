@@ -3,7 +3,7 @@
     <v-card shaped color="blue lighten-5">
       <v-row>
         <v-col cols="4" class="pa-0">
-          <v-toolbar color="blue" dark flat shaped>
+          <v-toolbar color="pink" dark flat shaped>
             <v-toolbar-title>訊息</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>

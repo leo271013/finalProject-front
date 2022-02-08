@@ -19,7 +19,7 @@
           </v-card> </template
       ></v-col>
       <v-col>
-        <v-row justify="center" no-gutters>
+        <v-row no-gutters justify="center">
           <v-col :cols="3">
             <v-text-field
               label="搜尋"
@@ -65,7 +65,7 @@
                       src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                     ></v-img>
 
-                    <v-card-title>Cafe Badilico</v-card-title>
+                    <v-card-title>Cafe Badilico {{ n }}</v-card-title>
 
                     <!-- <v-card-text>
                       <v-row align="center" class="mx-0">

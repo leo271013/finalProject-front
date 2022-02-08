@@ -1,6 +1,6 @@
 <template>
   <div class="memberpage">
-    <v-row class="mt-8 mx-16">
+    <v-row v-if="user.isLogin" class="mt-8 mx-16">
       <v-col :cols="2">
         <template>
           <v-card max-width="150" class="mt-16 transparent">
@@ -20,6 +20,7 @@
       ></v-col>
       <v-col class="pt-16"> <router-view /> </v-col>
     </v-row>
+    <div v-else class="mt-8 mx-16"><h1>請先登入</h1></div>
   </div>
 </template>
 
@@ -38,6 +39,11 @@ export default {
   methods: {
     search() {
       alert(this.searchtext);
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.getters.user;
     },
   },
 };

@@ -62,7 +62,6 @@
           </template>
         </v-col>
       </v-row>
-      <div class="wow bounceInUp">我是大變</div>
     </div>
   </div>
 </template>

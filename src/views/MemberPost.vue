@@ -11,6 +11,7 @@
         <v-row class="mt-8">
           <v-col
             ><v-img
+              class="mt-8"
               src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
               width="500"
             ></v-img
@@ -23,9 +24,6 @@
                 :key="item"
                 class="text-left"
               >
-                <v-list-item-icon>
-                  <v-icon></v-icon>
-                </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"
                     >{{ item.class }}
