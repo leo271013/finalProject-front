@@ -3,6 +3,7 @@
     <v-row class="ma-16 pa-16">
       <v-col class="pa-12"
         ><img
+          class="animate__animated animate__bounceInDown"
           src="~../assets/chtLogo.png"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'" /><img
           class="ml-12"
@@ -10,7 +11,7 @@
           src="~../assets/logo.png"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
       /></v-col>
-      <v-col>
+      <v-col class="animate__animated animate__fadeIn animate__fast">
         <h1 class="text-h3 text-center mb-12">關於我們</h1>
         <p class="text-h5">「Swapper 絲滑易物」 為一手、二手物品的交流平台</p>
         <p class="text-h5">
@@ -27,3 +28,4 @@
     </v-row>
   </div>
 </template>
+<style lang="scss" scoped></style>

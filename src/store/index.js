@@ -9,6 +9,11 @@ export default new Vuex.Store({
     token: "",
     account: "",
     role: 0,
+    userName: "",
+    aboutMe: "",
+    sColor: "success",
+    sText: "",
+    userImg: "",
   },
   getters: {
     user(state) {
@@ -24,18 +29,21 @@ export default new Vuex.Store({
       state.token = data.token;
       state.account = data.account;
       state.role = data.role;
-      state.email = data.email;
-      state.cart = data.cart;
+      state.userName = data.userName;
+      state.aboutMe = data.aboutMe;
+      state.userImg = data.userImg;
     },
   },
   actions: {
-    async login({ commit }, form) {
+    async login({ commit, state }, form) {
       try {
         const { data } = await api.post("/users/login", form);
         commit("login", data.result);
-        alert("登入成功");
+        state.sColor = "success";
+        state.sText = "登入成功";
       } catch (error) {
-        alert("失敗");
+        state.sColor = "red";
+        state.sText = "帳號或密碼錯誤";
       }
     },
   },
