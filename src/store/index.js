@@ -1,19 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "@/plugins/axios.js";
+import router from "@/router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    userId: "",
     token: "",
     account: "",
     role: 0,
-    userName: "",
-    aboutMe: "",
+    userInfo: { userName: "", aboutMe: "" },
     sColor: "success",
     sText: "",
-    userImg: "",
+    userImg: { userImg: "" },
   },
   getters: {
     user(state) {
@@ -26,12 +27,22 @@ export default new Vuex.Store({
   },
   mutations: {
     login(state, data) {
+      state.userId = data._id;
       state.token = data.token;
       state.account = data.account;
       state.role = data.role;
-      state.userName = data.userName;
-      state.aboutMe = data.aboutMe;
-      state.userImg = data.userImg;
+      state.userInfo.userName = data.userName;
+      state.userInfo.aboutMe = data.aboutMe;
+      state.userImg.userImg = data.userImg;
+    },
+    logout(state) {
+      state.userId = "";
+      state.token = "";
+      state.account = "";
+      state.role = 0;
+      state.userInfo.userName = "";
+      state.userInfo.aboutMe = "";
+      state.userImg.userImg = "";
     },
   },
   actions: {
@@ -44,6 +55,26 @@ export default new Vuex.Store({
       } catch (error) {
         state.sColor = "red";
         state.sText = "帳號或密碼錯誤";
+      }
+    },
+    async updateInfo({ state }) {
+      try {
+        await api.patch(`/users/${state.userId}`, state.userInfo);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async logout({ commit, state }) {
+      try {
+        await api.delete("/users/logout", {
+          headers: {
+            authorization: "Bearer " + state.token,
+          },
+        });
+        commit("logout");
+        router.push("/");
+      } catch (error) {
+        console.log(error);
       }
     },
   },

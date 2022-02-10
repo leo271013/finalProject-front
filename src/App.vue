@@ -44,7 +44,7 @@
                 class="px-6 none"
                 v-bind="attrs"
                 v-on="on"
-                v-if="!user.isLogin"
+                v-show="!user.isLogin"
               >
                 <h2>會員登入</h2>
               </v-tab>
@@ -166,13 +166,13 @@
                 <h2>會員專區</h2>
               </v-tab>
             </template>
-            <v-list flat class="text-center">
+            <v-list class="text-center py-0">
               <v-list-item-group>
                 <span v-for="(list, index) in lists" :key="index">
                   <v-list-item
                     v-if="index == 2"
-                    :to="lists[index].url"
                     @click="logout"
+                    class="red--text"
                   >
                     <v-list-item-title>{{
                       lists[index].name
@@ -183,6 +183,7 @@
                       lists[index].name
                     }}</v-list-item-title>
                   </v-list-item>
+                  <v-divider v-if="index == 1"></v-divider>
                 </span>
               </v-list-item-group>
             </v-list>
@@ -210,13 +211,35 @@
             top
             :color="sColor"
             v-model="snackbar"
+            multi-line
             timeout="1500"
-            transition="fab-transition"
+            transition="scale-transition"
             class="mt-16"
           >
-            {{ sText }}
+            <h3 class="ml-4">{{ sText }}</h3>
             <template v-slot:action="{ attrs }">
               <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
+          <v-snackbar
+            top
+            color="red"
+            multi-line
+            v-model="snackbar3"
+            timeout="1500"
+            transition="scale-transition"
+            class="mt-16"
+          >
+            <h3 class="ml-4">已登出</h3>
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="snackbar3 = false"
+              >
                 Close
               </v-btn>
             </template>
@@ -228,12 +251,13 @@
           <v-snackbar
             top
             :color="reColor"
+            multi-line
             v-model="snackbar2"
             timeout="1500"
-            transition="fab-transition"
+            transition="scale-transition"
             class="mt-16"
           >
-            {{ reText }}
+            <h3 class="ml-4">{{ reText }}</h3>
             <template v-slot:action="{ attrs }">
               <v-btn
                 color="blue"
@@ -285,6 +309,7 @@ export default {
     show: false,
     snackbar: false,
     snackbar2: false,
+    snackbar3: false,
     reText: "",
     reColor: "",
   }),
@@ -323,7 +348,8 @@ export default {
       this.snackbar = true;
     },
     logout() {
-      alert("asd");
+      this.$store.dispatch("logout");
+      this.snackbar3 = true;
     },
   },
   computed: {
