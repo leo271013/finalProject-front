@@ -12,7 +12,7 @@ export default new Vuex.Store({
     account: "",
     role: 0,
     userInfo: { userName: "", aboutMe: "" },
-    sColor: "success",
+    sColor: "",
     sText: "",
     userImg: { userImg: "" },
   },
@@ -60,8 +60,8 @@ export default new Vuex.Store({
     async updateInfo({ state }) {
       try {
         await api.patch(`/users/${state.userId}`, state.userInfo);
-      } catch (error) {
-        console.log(error);
+      } catch (_) {
+        _;
       }
     },
     async logout({ commit, state }) {
@@ -73,8 +73,8 @@ export default new Vuex.Store({
         });
         commit("logout");
         router.push("/");
-      } catch (error) {
-        console.log(error);
+      } catch (_) {
+        _;
       }
     },
   },

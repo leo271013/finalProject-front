@@ -5,14 +5,14 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-card
-              height="300"
-              width="300"
+              height="200"
+              width="200"
               class="mx-auto"
               v-bind="attrs"
               v-on="on"
               hover
               @click="upload"
-              ><v-img width="300" height="300" :src="userImg.userImg"></v-img
+              ><v-img width="200" height="200" :src="userImg.userImg"></v-img
             ></v-card>
           </template>
           <span>點擊上傳圖片</span>

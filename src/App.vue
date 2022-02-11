@@ -1,45 +1,36 @@
 <template>
   <v-app>
     <div id="bg" class="px-xl-16 pt-10">
-      <v-app-bar
-        flat
-        fixed
-        src="~./assets/navbar2.png"
-        height="150"
-        color="transparent"
-      >
-        <router-link
-          class="ml-16"
-          to="/"
-          :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
-          ><img src="~./assets/logo.png" alt="logo" contain height="145"
+      <v-app-bar fixed src="~./assets/bar.svg" height="110">
+        <router-link class="logo mt-6" to="/"
+          ><img src="~./assets/logo.svg" alt="logo" contain width="300"
         /></router-link>
-
-        <v-tabs
-          id="tab"
-          mobile-breakpoint
-          right
-          hide-slider
-          show-arrows
-          light
-          height="80"
-          class="mt-16"
+        <v-dialog
+          v-model="dialog"
+          :close-on-content-click="false"
+          :max-width="'30vh'"
         >
-          <v-tabs-slider></v-tabs-slider>
-          <v-tab class="px-6" to="/productpage">
-            <h2>商品頁(測試用)</h2>
-          </v-tab>
-          <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
-          <v-tab class="px-6" to="/grouppage">
-            <h2>團體募集</h2>
-          </v-tab>
+          <template v-slot:activator="{ on, attrs }">
+            <v-tabs
+              id="tab"
+              mobile-breakpoint
+              right
+              hide-slider
+              show-arrows
+              dark
+              height="80"
+              class="mt-6"
+              active-class="fontColor"
+            >
+              <v-tabs-slider></v-tabs-slider>
+              <v-tab class="px-6" to="/productpage">
+                <h2>商品頁(測試用)</h2>
+              </v-tab>
+              <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
+              <v-tab class="px-6" to="/grouppage">
+                <h2>團體募集</h2>
+              </v-tab>
 
-          <v-dialog
-            v-model="dialog"
-            :close-on-content-click="false"
-            :max-width="'30vh'"
-          >
-            <template v-slot:activator="{ on, attrs }">
               <v-tab
                 class="px-6 none"
                 v-bind="attrs"
@@ -48,148 +39,149 @@
               >
                 <h2>會員登入</h2>
               </v-tab>
-            </template>
 
-            <v-card class="pa-8 text-center">
-              <h2
-                v-show="logining"
-                class="animate__animated animate__fadeIn animate__fast"
+              <v-menu
+                bottom
+                offset-y
+                open-on-hover
+                :close-on-click="true"
+                :close-on-content-click="true"
+                v-if="user.isLogin"
+                transition="scale-transition"
               >
-                會員登入
-              </h2>
-              <h2
-                v-show="!logining"
-                class="animate__animated animate__fadeIn animate__fast"
+                <template v-slot:activator="{ on, attrs }">
+                  <v-tab class="px-6" v-bind="attrs" v-on="on" to="/memberpage">
+                    <h2>會員專區</h2>
+                  </v-tab>
+                </template>
+                <v-list class="text-center py-0">
+                  <v-list-item-group>
+                    <span v-for="(list, index) in lists" :key="index">
+                      <v-list-item
+                        v-if="index == 2"
+                        @click="logout"
+                        class="red--text"
+                      >
+                        <v-list-item-title>{{
+                          lists[index].name
+                        }}</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item v-else :to="lists[index].url">
+                        <v-list-item-title>{{
+                          lists[index].name
+                        }}</v-list-item-title>
+                      </v-list-item>
+                      <v-divider v-if="index == 1"></v-divider>
+                    </span>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+              <v-tab class="px-6" to="/about"> <h2>關於我們</h2> </v-tab>
+            </v-tabs>
+          </template>
+
+          <v-card class="pa-8 text-center">
+            <h2
+              v-show="logining"
+              class="animate__animated animate__fadeIn animate__fast"
+            >
+              會員登入
+            </h2>
+            <h2
+              v-show="!logining"
+              class="animate__animated animate__fadeIn animate__fast"
+            >
+              會員註冊
+            </h2>
+            <v-form
+              ref="form"
+              v-model="valid"
+              lazy-validation
+              v-show="logining"
+              @submit.prevent="login"
+              class="animate__animated animate__fadeIn animate__fast"
+            >
+              <v-text-field
+                v-model="form.account"
+                :counter="20"
+                :rules="accountRules"
+                label="帳號"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="form.password"
+                :rules="passwordRules"
+                label="密碼"
+                required
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
+                counter
+                @click:append="show = !show"
+              ></v-text-field>
+
+              <v-btn
+                :disabled="!valid"
+                outlined
+                rounded
+                color="orange"
+                class="ma-4"
+                @click="accountvalidate, (dialog = false)"
+                type="submit"
               >
-                會員註冊
-              </h2>
-              <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-                v-show="logining"
-                @submit.prevent="login"
-                class="animate__animated animate__fadeIn animate__fast"
+                登入
+              </v-btn>
+              <br />
+
+              <v-btn text color="error" @click="logining = false">
+                還沒有帳號? 立即註冊
+              </v-btn>
+            </v-form>
+            <v-form
+              ref="form2"
+              v-model="valid"
+              lazy-validation
+              v-show="!logining"
+              @submit.prevent="register"
+              class="animate__animated animate__fadeIn animate__fast"
+            >
+              <v-text-field
+                v-model="form2.account"
+                :counter="20"
+                :rules="accountRules"
+                label="帳號"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="form2.password"
+                :rules="passwordRules"
+                label="密碼"
+                required
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
+                counter
+                @click:append="show = !show"
+              ></v-text-field>
+
+              <v-btn
+                :disabled="!valid"
+                outlined
+                rounded
+                color="orange"
+                class="ma-4"
+                @click="accountvalidate2"
+                type="submit"
               >
-                <v-text-field
-                  v-model="form.account"
-                  :counter="20"
-                  :rules="accountRules"
-                  label="帳號"
-                  required
-                ></v-text-field>
-
-                <v-text-field
-                  v-model="form.password"
-                  :rules="passwordRules"
-                  label="密碼"
-                  required
-                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="show ? 'text' : 'password'"
-                  counter
-                  @click:append="show = !show"
-                ></v-text-field>
-
-                <v-btn
-                  :disabled="!valid"
-                  outlined
-                  rounded
-                  color="orange"
-                  class="ma-4"
-                  @click="accountvalidate, (dialog = false)"
-                  type="submit"
-                >
-                  登入
-                </v-btn>
-                <br />
-
-                <v-btn text color="error" @click="logining = false">
-                  還沒有帳號? 立即註冊
-                </v-btn>
-              </v-form>
-              <v-form
-                ref="form2"
-                v-model="valid"
-                lazy-validation
-                v-show="!logining"
-                @submit.prevent="register"
-                class="animate__animated animate__fadeIn animate__fast"
-              >
-                <v-text-field
-                  v-model="form2.account"
-                  :counter="20"
-                  :rules="accountRules"
-                  label="帳號"
-                  required
-                ></v-text-field>
-
-                <v-text-field
-                  v-model="form2.password"
-                  :rules="passwordRules"
-                  label="密碼"
-                  required
-                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="show ? 'text' : 'password'"
-                  counter
-                  @click:append="show = !show"
-                ></v-text-field>
-
-                <v-btn
-                  :disabled="!valid"
-                  outlined
-                  rounded
-                  color="orange"
-                  class="ma-4"
-                  @click="accountvalidate2"
-                  type="submit"
-                >
-                  註冊
-                </v-btn>
-                <br />
-                <v-btn text color="error" @click="logining = true">
-                  已有帳號? 立即登入
-                </v-btn>
-              </v-form>
-            </v-card>
-          </v-dialog>
-          <v-menu
-            bottom
-            offset-y
-            open-on-hover
-            :close-on-click="true"
-            :close-on-content-click="true"
-            v-if="user.isLogin"
-            transition="scale-transition"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-tab class="px-6" v-bind="attrs" v-on="on" to="/memberpage">
-                <h2>會員專區</h2>
-              </v-tab>
-            </template>
-            <v-list class="text-center py-0">
-              <v-list-item-group>
-                <span v-for="(list, index) in lists" :key="index">
-                  <v-list-item
-                    v-if="index == 2"
-                    @click="logout"
-                    class="red--text"
-                  >
-                    <v-list-item-title>{{
-                      lists[index].name
-                    }}</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item v-else :to="lists[index].url">
-                    <v-list-item-title>{{
-                      lists[index].name
-                    }}</v-list-item-title>
-                  </v-list-item>
-                  <v-divider v-if="index == 1"></v-divider>
-                </span>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
-          <v-tab class="px-6" to="/about"> <h2>關於我們</h2> </v-tab>
-        </v-tabs>
+                註冊
+              </v-btn>
+              <br />
+              <v-btn text color="error" @click="logining = true">
+                已有帳號? 立即登入
+              </v-btn>
+            </v-form>
+          </v-card>
+        </v-dialog>
 
         <v-spacer></v-spacer>
 
@@ -202,7 +194,7 @@
           unchecked-text=" 🌞 "
           checkedBg="blue"
           uncheckedBg="white"
-          class="mx-8 pr-12"
+          class="right ml-8 pr-12"
         />
       </v-app-bar>
       <template>
@@ -218,7 +210,12 @@
           >
             <h3 class="ml-4">{{ sText }}</h3>
             <template v-slot:action="{ attrs }">
-              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+              <v-btn
+                color="blue lighten-5"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+              >
                 Close
               </v-btn>
             </template>
@@ -235,7 +232,7 @@
             <h3 class="ml-4">已登出</h3>
             <template v-slot:action="{ attrs }">
               <v-btn
-                color="blue"
+                color="blue lighten-5"
                 text
                 v-bind="attrs"
                 @click="snackbar3 = false"
@@ -260,7 +257,7 @@
             <h3 class="ml-4">{{ reText }}</h3>
             <template v-slot:action="{ attrs }">
               <v-btn
-                color="blue"
+                color="blue lighten-5"
                 text
                 v-bind="attrs"
                 @click="snackbar2 = false"
@@ -272,10 +269,17 @@
         </div>
       </template>
       <!-- <hr class="line" /> -->
-      <v-main class="my-16 px-16">
+      <v-main class="my-10 px-16">
         <router-view />
       </v-main>
     </div>
+    <v-footer padless color="red lighten-1">
+      <v-col class="text-center" cols="12">
+        Copyright © {{ new Date().getFullYear() }} <strong>Swapper</strong>. All
+        rights reserved. 版權所有© {{ new Date().getFullYear() }}
+        <strong>Swapper</strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
@@ -300,7 +304,6 @@ export default {
     passwordRules: [(v) => !!v || "請輸入密碼"],
     isToggled: false,
     logining: true,
-    dialog: false,
     lists: [
       { name: "商品刊登", url: "/memberpage/memberpost" },
       { name: "訊息", url: "/memberpage/membermessage" },
@@ -312,6 +315,8 @@ export default {
     snackbar3: false,
     reText: "",
     reColor: "",
+    dialog: false,
+    state: "",
   }),
   methods: {
     accountvalidate() {
@@ -368,7 +373,7 @@ export default {
 <style lang="scss" scoped>
 #bg {
   height: 100%;
-  background: url("~./assets/test.png") fixed no-repeat top/cover;
+  // background: url("~./assets/test.png") fixed no-repeat top/cover;
 }
 .line {
   border: 3px solid;
@@ -377,7 +382,16 @@ export default {
   margin-right: 140px;
   border-image: linear-gradient(90deg, #ff9800, #f44336) 30 30;
 }
+.logo {
+  margin-left: 210px;
+}
+.right {
+  margin-right: 200px;
+}
+.fontColor {
+  color: white !important;
+}
 .none {
-  color: rgba(0, 0, 0, 0.54) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 </style>

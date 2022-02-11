@@ -1,6 +1,7 @@
 <template>
   <div class="productpage">
     <div class="mt-16 mx-16">
+      <v-breadcrumbs :items="address" large></v-breadcrumbs>
       <v-row class="mt-8 mx-16">
         <v-col
           ><v-img
@@ -89,6 +90,16 @@ export default {
       },
       {
         src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+      },
+    ],
+    address: [
+      {
+        text: "全部",
+        to: "/",
+      },
+      {
+        text: "",
+        to: "/",
       },
     ],
   }),

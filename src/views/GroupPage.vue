@@ -4,7 +4,7 @@
       <v-col :cols="1">
         <template>
           <v-card max-width="100" class="mt-16 transparent">
-            <v-list flat tile class="text-center transparent">
+            <v-list flat tile class="text-center pa-0 transparent">
               <v-list-item-group mandatory color="red">
                 <div v-for="(item, i) in items" :key="i">
                   <v-list-item class="mb-0">

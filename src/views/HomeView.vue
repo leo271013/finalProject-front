@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <v-row class="mt-8 mx-16">
-      <v-col :cols="1">
+    <v-row class="mt-8 mx-8">
+      <v-col :cols="2">
         <template>
-          <v-card max-width="100" class="mt-16 transparent">
-            <v-list flat nav class="text-center transparent">
+          <v-card max-width="150" class="mt-16 ml-16 transparent">
+            <v-list flat nav class="text-center pa-0 transparent">
               <v-list-item-group mandatory color="red">
                 <div v-for="(item, i) in items" :key="i">
                   <v-list-item class="mb-0">
@@ -19,7 +19,7 @@
           </v-card> </template
       ></v-col>
       <v-col>
-        <v-row no-gutters justify="center">
+        <v-row justify="center">
           <v-col :cols="3">
             <v-text-field
               label="搜尋"
@@ -40,18 +40,13 @@
               >
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
-            </v-text-field></v-col
-          >
+            </v-text-field>
+          </v-col>
           <v-col :cols="11">
             <v-row>
               <v-col :cols="3" v-for="n in 8" :key="n">
                 <template>
-                  <v-card
-                    :loading="loading"
-                    class="mx-auto"
-                    max-width="374"
-                    hover
-                  >
+                  <v-card max-width="230" hover>
                     <template slot="progress">
                       <v-progress-linear
                         color="deep-purple"
@@ -61,63 +56,14 @@
                     </template>
 
                     <v-img
-                      height="250"
                       src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                     ></v-img>
 
                     <v-card-title>Cafe Badilico {{ n }}</v-card-title>
 
-                    <!-- <v-card-text>
-                      <v-row align="center" class="mx-0">
-                        <v-rating
-                          :value="4.5"
-                          color="amber"
-                          dense
-                          half-increments
-                          readonly
-                          size="14"
-                        ></v-rating>
-
-                        <div class="grey--text ms-4">4.5 (413)</div>
-                      </v-row>
-
-                      <div class="my-4 text-subtitle-1">$ • Italian, Cafe</div>
-
-                      <div>
-                        Small plates, salads & sandwiches - an intimate setting
-                        with 12 indoor seats plus patio seating.
-                      </div>
+                    <v-card-text
+                      >新手全身文明委託一口氣不需要顯集反饋戰爭之間無聊和平島。
                     </v-card-text>
-
-                    <v-divider class="mx-4"></v-divider>
-
-                    <v-card-title>Tonight's availability</v-card-title>
-
-                    <v-card-text>
-                      <v-chip-group
-                        v-model="selection"
-                        active-class="deep-purple accent-4 white--text"
-                        column
-                      >
-                        <v-chip>5:30PM</v-chip>
-
-                        <v-chip>7:30PM</v-chip>
-
-                        <v-chip>8:00PM</v-chip>
-
-                        <v-chip>9:00PM</v-chip>
-                      </v-chip-group>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-btn
-                        color="deep-purple lighten-2"
-                        text
-                        @click="reserve"
-                      >
-                        Reserve
-                      </v-btn>
-                    </v-card-actions> -->
                   </v-card>
                 </template></v-col
               >
