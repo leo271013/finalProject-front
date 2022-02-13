@@ -30,10 +30,12 @@
               </v-btn>
             </p>
             <v-text-field
+              autofocus
               v-show="edit"
               :rules="rules"
               v-model="userInfo.userName"
-              @keyup.enter="(edit = false), updateInfo"
+              @keyup.enter="(edit = false), updateInfo()"
+              @blur="(edit = false), updateInfo()"
             >
               <v-btn
                 height="22"
@@ -83,6 +85,7 @@ export default {
       alert("up");
     },
     updateInfo() {
+      console.log("hey");
       this.$store.dispatch("updateInfo");
     },
     valid() {

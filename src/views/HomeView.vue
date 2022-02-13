@@ -23,7 +23,7 @@
           <v-col :cols="3">
             <v-text-field
               label="搜尋"
-              clearable="true"
+              clearable
               v-model="searchtext"
               color="orange"
               @keyup.enter="search"

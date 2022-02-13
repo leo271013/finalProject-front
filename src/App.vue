@@ -368,6 +368,9 @@ export default {
       return this.$store.state.sText;
     },
   },
+  async created() {
+    this.$store.dispatch("getInfo");
+  },
 };
 </script>
 <style lang="scss" scoped>

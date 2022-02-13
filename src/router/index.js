@@ -34,22 +34,19 @@ const routes = [
   },
   {
     path: "/memberpage",
-    name: "memberpage",
     component: () =>
       import(/* webpackChunkName: "memberpage" */ "../views/MemberPage.vue"),
-    meta: {
-      title: "會員專區 | Swapper",
-    },
     children: [
       {
         path: "",
-        name: "memberinfo",
+        name: "memberpage",
         component: () =>
           import(
             /* webpackChunkName: "memberpage" */ "../views/MemberInfo.vue"
           ),
         meta: {
           title: "會員專區 | 購物網",
+          login: true,
         },
       },
       {
@@ -61,6 +58,7 @@ const routes = [
           ),
         meta: {
           title: "商品刊登 | 購物網",
+          login: true,
         },
       },
       {
@@ -70,6 +68,7 @@ const routes = [
           import(/* webpackChunkName: "memberpage" */ "../views/PostEdit.vue"),
         meta: {
           title: "商品管理 | 購物網",
+          login: true,
         },
       },
       {
@@ -81,6 +80,7 @@ const routes = [
           ),
         meta: {
           title: "訊息 | 購物網",
+          login: true,
         },
       },
     ],
@@ -101,10 +101,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const user = store.getters["user/user"];
+  const user = store.getters["user"];
   if (to.meta.login && !user.isLogin) {
-    next("/login");
-  } else if (to.meta.admin && !user.isAdmin) {
     next("/");
   } else {
     next();

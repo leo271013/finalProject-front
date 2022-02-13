@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "@/plugins/axios.js";
-import router from "@/router";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -44,6 +44,17 @@ export default new Vuex.Store({
       state.userInfo.aboutMe = "";
       state.userImg.userImg = "";
     },
+    getInfo(state, data) {
+      state.userId = data._id;
+      state.account = data.account;
+      state.role = data.role;
+      state.userInfo.userName = data.userName;
+      state.userInfo.aboutMe = data.aboutMe;
+      state.userImg.userImg = data.userImg;
+    },
+    extend(state, data) {
+      state.token = data;
+    },
   },
   actions: {
     async login({ commit, state }, form) {
@@ -72,11 +83,29 @@ export default new Vuex.Store({
           },
         });
         commit("logout");
-        router.push("/");
       } catch (_) {
         _;
       }
     },
+    async getInfo({ commit, state }) {
+      if (state.token.length === 0) return;
+      try {
+        const { data } = await api.get("/users/me", {
+          headers: {
+            authorization: "Bearer " + state.token,
+          },
+        });
+        commit("getInfo", data.result);
+      } catch (error) {
+        commit("logout");
+      }
+    },
   },
   modules: {},
+  plugins: [
+    createPersistedState({
+      key: "user",
+      paths: ["token"],
+    }),
+  ],
 });
