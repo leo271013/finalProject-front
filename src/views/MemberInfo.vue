@@ -79,10 +79,11 @@ export default {
     ],
     rules2: [(v) => v.length <= 50 || "關於我請勿超過50個字"],
     lock: false,
+    show: false,
   }),
   methods: {
     upload() {
-      alert("up");
+      this.$store.dispatch("upload");
     },
     updateInfo() {
       console.log("hey");
@@ -90,6 +91,41 @@ export default {
     },
     valid() {
       this.$refs.form.validate() ? (this.lock = false) : (this.lock = true);
+    },
+    toggleShow() {
+      this.show = !this.show;
+    },
+    /**
+     * crop success
+     *
+     * [param] imgDataUrl
+     * [param] field
+     */
+    cropSuccess(imgDataUrl) {
+      console.log("-------- crop success --------");
+      this.imgDataUrl = imgDataUrl;
+    },
+    /**
+     * upload success
+     *
+     * [param] jsonData   服务器返回数据，已进行json转码
+     * [param] field
+     */
+    cropUploadSuccess(jsonData, field) {
+      console.log("-------- upload success --------");
+      console.log(jsonData);
+      console.log("field: " + field);
+    },
+    /**
+     * upload fail
+     *
+     * [param] status    server api return error status, like 500
+     * [param] field
+     */
+    cropUploadFail(status, field) {
+      console.log("-------- upload fail --------");
+      console.log(status);
+      console.log("field: " + field);
     },
   },
   computed: {

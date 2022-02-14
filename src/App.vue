@@ -47,7 +47,7 @@
                 :close-on-click="true"
                 :close-on-content-click="true"
                 v-if="user.isLogin"
-                transition="scale-transition"
+                transition="fade-transition"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-tab class="px-6" v-bind="attrs" v-on="on" to="/memberpage">
@@ -269,12 +269,12 @@
         </div>
       </template>
       <!-- <hr class="line" /> -->
-      <v-main class="my-10 px-16">
+      <v-main class="mt-8 px-16">
         <router-view />
       </v-main>
     </div>
-    <v-footer padless color="red lighten-1">
-      <v-col class="text-center" cols="12">
+    <v-footer padless color="transparent">
+      <v-col class="text-center footer mt-2" cols="12">
         Copyright © {{ new Date().getFullYear() }} <strong>Swapper</strong>. All
         rights reserved. 版權所有© {{ new Date().getFullYear() }}
         <strong>Swapper</strong>
@@ -396,5 +396,8 @@ export default {
 }
 .none {
   color: rgba(255, 255, 255, 0.6) !important;
+}
+.footer {
+  color: rgba(128, 128, 128, 0.582);
 }
 </style>

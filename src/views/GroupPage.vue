@@ -45,12 +45,7 @@
             <v-row>
               <v-col :cols="3" v-for="n in 8" :key="n">
                 <template>
-                  <v-card
-                    :loading="loading"
-                    class="mx-auto"
-                    max-width="374"
-                    hover
-                  >
+                  <v-card class="mx-auto" max-width="374" hover>
                     <template slot="progress">
                       <v-progress-linear
                         color="deep-purple"

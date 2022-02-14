@@ -100,6 +100,13 @@ export default new Vuex.Store({
         commit("logout");
       }
     },
+    async upload({ state }) {
+      try {
+        await api.patch(`/users/${state.userId}`, state.userImg);
+      } catch (_) {
+        _;
+      }
+    },
   },
   modules: {},
   plugins: [

@@ -14,6 +14,7 @@
     "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-axios": "^3.4.0",
+    "vue-image-crop-upload": "^3.0.3",
     "vue-router": "^3.5.1",
     "vue-toggles": "^1.1.4",
     "vuetify": "^2.4.0",
