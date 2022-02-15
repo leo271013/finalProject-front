@@ -7,8 +7,11 @@ import vuetify from "./plugins/vuetify";
 import VueToggles from "vue-toggles";
 import "./plugins/axios.js";
 import "animate.css";
+import ImgInputer from "vue-img-inputer";
+import "vue-img-inputer/dist/index.css";
 
 Vue.component("VueToggles", VueToggles);
+Vue.component("ImgInputer", ImgInputer);
 
 Vue.config.productionTip = false;
 

@@ -2,22 +2,30 @@
   <div class="MemberInfo">
     <v-row class="pt-16">
       <v-col cols="4">
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-card
-              height="200"
-              width="200"
-              class="mx-auto"
-              v-bind="attrs"
-              v-on="on"
-              hover
-              @click="upload"
-              ><v-img width="200" height="200" :src="userImg.userImg"></v-img
-            ></v-card>
-          </template>
-          <span>點擊上傳圖片</span>
-        </v-tooltip></v-col
-      >
+        <v-card
+          v-show="imgedit === false"
+          outlined
+          height="200"
+          width="200"
+          class="mx-auto"
+          @click.native="upload"
+          ><v-img width="200" height="200" :src="userInfo.image"></v-img
+        ></v-card>
+        <img-inputer
+          v-show="imgedit === true"
+          @change="onFileChange(e)"
+          accept="image/*"
+          v-model="NewuserImg.image"
+          theme="light"
+          size="large"
+          bottom-text="點選或拖拽圖片以修改"
+          hover-text="點選或拖拽圖片以修改"
+          placeholder="點選或拖拽選擇圖片"
+          :max-size="1024"
+          exceed-size-text="檔案大小不能超過"
+        ></img-inputer>
+        <v-btn @click="imgedit = !imgedit">變更頭像</v-btn>
+      </v-col>
       <v-col cols="6">
         <v-card flat class="pa-8">
           <v-form ref="form">
@@ -66,6 +74,8 @@
               </v-container> </template></v-form
         ></v-card> </v-col
     ></v-row>
+    <v-btn @click="ch">改變</v-btn>
+    <v-btn @click="upload">上傳</v-btn>
   </div>
 </template>
 <script>
@@ -79,61 +89,31 @@ export default {
     ],
     rules2: [(v) => v.length <= 50 || "關於我請勿超過50個字"],
     lock: false,
-    show: false,
+    NewuserImg: { image: "" },
+    imgedit: false,
   }),
   methods: {
-    upload() {
-      this.$store.dispatch("upload");
-    },
     updateInfo() {
-      console.log("hey");
       this.$store.dispatch("updateInfo");
     },
     valid() {
       this.$refs.form.validate() ? (this.lock = false) : (this.lock = true);
     },
-    toggleShow() {
-      this.show = !this.show;
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
     },
-    /**
-     * crop success
-     *
-     * [param] imgDataUrl
-     * [param] field
-     */
-    cropSuccess(imgDataUrl) {
-      console.log("-------- crop success --------");
-      this.imgDataUrl = imgDataUrl;
+    upload() {
+      this.$store.dispatch("updateInfo");
     },
-    /**
-     * upload success
-     *
-     * [param] jsonData   服务器返回数据，已进行json转码
-     * [param] field
-     */
-    cropUploadSuccess(jsonData, field) {
-      console.log("-------- upload success --------");
-      console.log(jsonData);
-      console.log("field: " + field);
-    },
-    /**
-     * upload fail
-     *
-     * [param] status    server api return error status, like 500
-     * [param] field
-     */
-    cropUploadFail(status, field) {
-      console.log("-------- upload fail --------");
-      console.log(status);
-      console.log("field: " + field);
+    ch() {
+      this.$store.commit("uploadimg", this.NewuserImg);
     },
   },
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
-    },
-    userImg() {
-      return this.$store.state.userImg;
     },
   },
 };

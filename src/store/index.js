@@ -11,10 +11,9 @@ export default new Vuex.Store({
     token: "",
     account: "",
     role: 0,
-    userInfo: { userName: "", aboutMe: "" },
+    userInfo: { userName: "", aboutMe: "", image: "" },
     sColor: "",
     sText: "",
-    userImg: { userImg: "" },
   },
   getters: {
     user(state) {
@@ -33,7 +32,7 @@ export default new Vuex.Store({
       state.role = data.role;
       state.userInfo.userName = data.userName;
       state.userInfo.aboutMe = data.aboutMe;
-      state.userImg.userImg = data.userImg;
+      state.userInfo.image = data.image;
     },
     logout(state) {
       state.userId = "";
@@ -42,7 +41,7 @@ export default new Vuex.Store({
       state.role = 0;
       state.userInfo.userName = "";
       state.userInfo.aboutMe = "";
-      state.userImg.userImg = "";
+      state.userInfo.image = "";
     },
     getInfo(state, data) {
       state.userId = data._id;
@@ -50,10 +49,13 @@ export default new Vuex.Store({
       state.role = data.role;
       state.userInfo.userName = data.userName;
       state.userInfo.aboutMe = data.aboutMe;
-      state.userImg.userImg = data.userImg;
+      state.userInfo.image = data.image;
     },
     extend(state, data) {
       state.token = data;
+    },
+    uploadimg(state, data) {
+      state.userInfo.image = data.image;
     },
   },
   actions: {
@@ -69,12 +71,27 @@ export default new Vuex.Store({
       }
     },
     async updateInfo({ state }) {
+      const fd = new FormData();
+      for (const key in state.userInfo) {
+        if (key !== "_id") {
+          fd.append(key, state.userInfo[key]);
+        }
+      }
       try {
-        await api.patch(`/users/${state.userId}`, state.userInfo);
+        const { data } = await api.patch("/users/" + state.userId, fd, {
+          headers: {
+            authorization: "Bearer " + state.token,
+          },
+        });
+        state.userInfo[state.userInfo.index] = {
+          ...state.userInfo,
+          image: data.result.image,
+        };
       } catch (_) {
         _;
       }
     },
+
     async logout({ commit, state }) {
       try {
         await api.delete("/users/logout", {
@@ -98,13 +115,6 @@ export default new Vuex.Store({
         commit("getInfo", data.result);
       } catch (error) {
         commit("logout");
-      }
-    },
-    async upload({ state }) {
-      try {
-        await api.patch(`/users/${state.userId}`, state.userImg);
-      } catch (_) {
-        _;
       }
     },
   },
