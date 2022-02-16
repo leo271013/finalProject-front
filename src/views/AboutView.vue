@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="about pt-16">
     <v-row class="ma-16 pa-16">
       <v-col class="pa-12"
         ><img

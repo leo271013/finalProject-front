@@ -1,6 +1,6 @@
 <template>
   <div class="MemberMessage">
-    <v-card shaped color="blue lighten-5">
+    <v-card shaped color="blue lighten-5" class="mt-16">
       <v-row>
         <v-col cols="4" class="pa-0">
           <v-toolbar color="light-blue" dark flat shaped>

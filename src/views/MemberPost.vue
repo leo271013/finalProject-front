@@ -1,20 +1,23 @@
 <template>
   <div class="memberpost text-center">
-    <v-btn color="success" class="mb-4">
+    <v-btn color="success" class="mb-4" @click="productupload">
       商品上架
-      <template v-slot:loader>
-        <span>Loading...</span>
-      </template>
     </v-btn>
     <div class="content">
       <div class="mx-16">
         <v-row class="mt-8">
-          <v-col
-            ><v-img
-              class="mt-8"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-              width="500"
-            ></v-img
+          <v-col>
+            <img-inputer
+              class="inputer"
+              accept="image/*"
+              v-model="productImg"
+              theme="light"
+              bottom-text="點選或拖拽圖片以修改"
+              hover-text="點選或拖拽圖片以修改"
+              placeholder="點選或拖拽圖片"
+              :max-size="1024"
+              exceed-size-text="檔案大小不能超過"
+            ></img-inputer
           ></v-col>
           <v-col
             ><v-list flat>
@@ -134,9 +137,7 @@ export default {
       { class: "商品名稱:", name: "請輸入商品名稱", edit: false, value: "" },
       {
         class: "分類:",
-        name: "請輸入商品名稱",
         edit: false,
-        value: "",
         item: [
           "電腦",
           "電腦周邊",
@@ -153,25 +154,19 @@ export default {
       },
       {
         class: "商品新舊:",
-        name: "請輸入商品名稱",
         edit: false,
-        value: "",
         item: ["全新", "二手"],
         choose: "",
       },
       {
         class: "以物易物:",
-        name: "請輸入商品名稱",
         edit: false,
-        value: "",
         item: ["是", "否(無償贈送)"],
         choose: "",
       },
       {
         class: "數量:",
-        name: "請輸入商品名稱",
         edit: false,
-        value: "",
         item: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         choose: "",
       },
@@ -199,13 +194,32 @@ export default {
       { state: "California" },
       { state: "New York" },
     ],
+    productImg: "",
   }),
-  methods: {},
+  methods: {
+    productupload() {
+      const data = {
+        name: this.product[0].value,
+        class: this.product[1].choose,
+        state: this.product[2].choose,
+        image: this.productImg,
+        barter: this.product[3].choose,
+        quantity: this.product[4].choose,
+        goal: this.product[5].choose,
+      };
+      alert(data);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .content {
-  height: 50vh;
+  height: 70vh;
   overflow-y: scroll;
+  background: rgba(202, 131, 0, 0.103);
+}
+.inputer {
+  width: 400px;
+  height: 400px;
 }
 </style>

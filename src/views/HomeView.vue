@@ -59,6 +59,8 @@
                         </template>
 
                         <v-img
+                          width="250"
+                          height="185"
                           src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                         ></v-img>
 

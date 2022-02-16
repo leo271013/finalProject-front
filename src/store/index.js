@@ -12,8 +12,10 @@ export default new Vuex.Store({
     account: "",
     role: 0,
     userInfo: { userName: "", aboutMe: "", image: "" },
+    userImg: "",
     sColor: "",
     sText: "",
+    uploadText: "上傳成功，請稍後重新整理頁面",
   },
   getters: {
     user(state) {
@@ -32,7 +34,7 @@ export default new Vuex.Store({
       state.role = data.role;
       state.userInfo.userName = data.userName;
       state.userInfo.aboutMe = data.aboutMe;
-      state.userInfo.image = data.image;
+      state.userImg = data.image;
     },
     logout(state) {
       state.userId = "";
@@ -41,7 +43,7 @@ export default new Vuex.Store({
       state.role = 0;
       state.userInfo.userName = "";
       state.userInfo.aboutMe = "";
-      state.userInfo.image = "";
+      state.userImg = "";
     },
     getInfo(state, data) {
       state.userId = data._id;
@@ -49,7 +51,7 @@ export default new Vuex.Store({
       state.role = data.role;
       state.userInfo.userName = data.userName;
       state.userInfo.aboutMe = data.aboutMe;
-      state.userInfo.image = data.image;
+      state.userImg = data.image;
     },
     extend(state, data) {
       state.token = data;
@@ -70,7 +72,8 @@ export default new Vuex.Store({
         state.sText = "帳號或密碼錯誤";
       }
     },
-    async updateInfo({ state }) {
+    async updateInfo({ state }, data) {
+      this.commit("uploadimg", data);
       const fd = new FormData();
       for (const key in state.userInfo) {
         if (key !== "_id") {
@@ -87,8 +90,8 @@ export default new Vuex.Store({
           ...state.userInfo,
           image: data.result.image,
         };
-      } catch (_) {
-        _;
+      } catch (error) {
+        console.log(error);
       }
     },
 

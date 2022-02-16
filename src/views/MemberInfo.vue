@@ -1,7 +1,17 @@
 <template>
   <div class="MemberInfo">
     <v-row class="pt-16">
-      <v-col cols="4">
+      <v-col cols="4" class="text-center">
+        <v-btn outlined @click="imgedit = !imgedit" class="my-4 mx-16">{{
+          btn
+        }}</v-btn>
+        <v-btn
+          v-show="NewuserImg.image !== ''"
+          @click="upload"
+          class="mb-4 mx-16"
+          >上傳</v-btn
+        >
+        <br />
         <v-card
           v-show="imgedit === false"
           outlined
@@ -9,22 +19,20 @@
           width="200"
           class="mx-auto"
           @click.native="upload"
-          ><v-img width="200" height="200" :src="userInfo.image"></v-img
+          ><v-img width="200" height="200" :src="userImg"></v-img
         ></v-card>
         <img-inputer
+          class="inputer"
           v-show="imgedit === true"
-          @change="onFileChange(e)"
           accept="image/*"
           v-model="NewuserImg.image"
           theme="light"
-          size="large"
           bottom-text="點選或拖拽圖片以修改"
           hover-text="點選或拖拽圖片以修改"
-          placeholder="點選或拖拽選擇圖片"
+          placeholder="點選或拖拽圖片"
           :max-size="1024"
           exceed-size-text="檔案大小不能超過"
         ></img-inputer>
-        <v-btn @click="imgedit = !imgedit">變更頭像</v-btn>
       </v-col>
       <v-col cols="6">
         <v-card flat class="pa-8">
@@ -74,8 +82,28 @@
               </v-container> </template></v-form
         ></v-card> </v-col
     ></v-row>
-    <v-btn @click="ch">改變</v-btn>
-    <v-btn @click="upload">上傳</v-btn>
+
+    <v-snackbar
+      top
+      color="success"
+      multi-line
+      v-model="snackbar4"
+      timeout="1500"
+      transition="scale-transition"
+      class="mt-16"
+    >
+      <h3 class="ml-4">{{ uploadText }}</h3>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue lighten-5"
+          text
+          v-bind="attrs"
+          @click="snackbar4 = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 <script>
@@ -91,30 +119,42 @@ export default {
     lock: false,
     NewuserImg: { image: "" },
     imgedit: false,
+    snackbar4: false,
+    btn: "變更頭像",
   }),
   methods: {
     updateInfo() {
-      this.$store.dispatch("updateInfo");
+      this.$store.dispatch("updateInfo", this.NewuserImg);
     },
     valid() {
       this.$refs.form.validate() ? (this.lock = false) : (this.lock = true);
     },
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-    },
     upload() {
-      this.$store.dispatch("updateInfo");
-    },
-    ch() {
-      this.$store.commit("uploadimg", this.NewuserImg);
+      this.$store.dispatch("updateInfo", this.NewuserImg);
+      this.snackbar4 = true;
     },
   },
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
     },
+    userImg() {
+      return this.$store.state.userImg;
+    },
+    uploadText() {
+      return this.$store.state.uploadText;
+    },
+  },
+  watch: {
+    imgedit: function () {
+      this.imgedit ? (this.btn = "取消變更") : (this.btn = "變更頭像");
+    },
   },
 };
 </script>
+<style lang="scss" scoped>
+.inputer {
+  width: 200px;
+  height: 200px;
+}
+</style>

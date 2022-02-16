@@ -1,6 +1,6 @@
 <template>
   <div class="PostEdit">
-    <v-card>
+    <v-card class="mt-16">
       <v-toolbar dark flat shaped color="blue">
         <v-toolbar-title>上架商品編輯</v-toolbar-title>
 

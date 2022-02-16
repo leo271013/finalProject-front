@@ -1,124 +1,93 @@
 <template>
   <div class="grouppage">
-    <v-row class="mt-8 mx-16">
-      <v-col :cols="1">
-        <template>
-          <v-card max-width="100" class="mt-16 transparent">
-            <v-list flat tile class="text-center pa-0 transparent">
-              <v-list-item-group mandatory color="red">
-                <div v-for="(item, i) in items" :key="i">
-                  <v-list-item class="mb-0">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider v-if="item != '衣鞋包錶'"></v-divider>
-                </div>
-              </v-list-item-group>
-            </v-list>
-          </v-card> </template
-      ></v-col>
-      <v-col>
-        <v-row justify="center" no-gutters>
-          <v-col :cols="3">
-            <v-text-field
-              label="搜尋"
-              clearable
-              v-model="searchtext"
-              color="orange"
-            >
-              <v-btn
-                height="22"
-                width="22"
-                icon
-                slot="append"
-                @click="search"
-                plain
-                class="mx-2"
-                color="orange"
-              >
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
-            </v-text-field></v-col
+    <v-row class="mt-12 mx-8" justify="center">
+      <v-col :cols="3">
+        <v-text-field
+          label="搜尋"
+          clearable
+          v-model="searchtext"
+          color="pink"
+          @keyup.enter="search"
+          class="mb-2"
+        >
+          <v-btn
+            height="22"
+            width="22"
+            icon
+            slot="append"
+            @click="search"
+            plain
+            class="mx-2"
+            color="pink"
           >
-          <v-col :cols="11">
-            <v-row>
-              <v-col :cols="3" v-for="n in 8" :key="n">
-                <template>
-                  <v-card class="mx-auto" max-width="374" hover>
-                    <template slot="progress">
-                      <v-progress-linear
-                        color="deep-purple"
-                        height="10"
-                        indeterminate
-                      ></v-progress-linear>
-                    </template>
-
-                    <v-img
-                      height="250"
-                      src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
-                    ></v-img>
-
-                    <v-card-title>Cafe Badilico</v-card-title>
-
-                    <!-- <v-card-text>
-                      <v-row align="center" class="mx-0">
-                        <v-rating
-                          :value="4.5"
-                          color="amber"
-                          dense
-                          half-increments
-                          readonly
-                          size="14"
-                        ></v-rating>
-
-                        <div class="grey--text ms-4">4.5 (413)</div>
-                      </v-row>
-
-                      <div class="my-4 text-subtitle-1">$ • Italian, Cafe</div>
-
-                      <div>
-                        Small plates, salads & sandwiches - an intimate setting
-                        with 12 indoor seats plus patio seating.
-                      </div>
-                    </v-card-text>
-
-                    <v-divider class="mx-4"></v-divider>
-
-                    <v-card-title>Tonight's availability</v-card-title>
-
-                    <v-card-text>
-                      <v-chip-group
-                        v-model="selection"
-                        active-class="deep-purple accent-4 white--text"
-                        column
-                      >
-                        <v-chip>5:30PM</v-chip>
-
-                        <v-chip>7:30PM</v-chip>
-
-                        <v-chip>8:00PM</v-chip>
-
-                        <v-chip>9:00PM</v-chip>
-                      </v-chip-group>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-btn
-                        color="deep-purple lighten-2"
-                        text
-                        @click="reserve"
-                      >
-                        Reserve
-                      </v-btn>
-                    </v-card-actions> -->
-                  </v-card>
-                </template></v-col
-              >
-            </v-row>
-          </v-col>
-        </v-row>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-text-field>
       </v-col>
+      <v-col cols="12" class="pa-0"
+        ><v-row>
+          <v-col :cols="2">
+            <template>
+              <v-card max-width="120" class="ml-16">
+                <v-list nav class="text-center pa-0">
+                  <v-list-item-group mandatory>
+                    <div v-for="(item, i) in items" :key="i">
+                      <v-list-item class="mb-0" color="pink">
+                        <v-list-item-content>
+                          <v-list-item-title v-text="item"></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider v-if="item != '衣鞋包錶'"></v-divider>
+                    </div>
+                  </v-list-item-group>
+                </v-list>
+              </v-card> </template
+          ></v-col>
+          <v-col>
+            <v-row justify="center">
+              <v-col :cols="12">
+                <v-row>
+                  <v-col :cols="3" v-for="n in 8" :key="n">
+                    <template>
+                      <v-card max-width="250" max-height="280" hover>
+                        <template slot="progress">
+                          <v-progress-linear
+                            color="deep-purple"
+                            height="10"
+                            indeterminate
+                          ></v-progress-linear>
+                        </template>
+
+                        <v-img
+                          width="250"
+                          height="185"
+                          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+                        ></v-img>
+
+                        <v-card-title class="py-1"
+                          >Cafe Badilico {{ n }}</v-card-title
+                        >
+
+                        <v-card-text
+                          >新手全身文明委託一口氣不需要顯集反饋戰爭之間無聊和平島。
+                        </v-card-text>
+                      </v-card>
+                    </template></v-col
+                  >
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-col></v-row
+        ></v-col
+      >
+      <v-col cols="12">
+        <div class="mt-6">
+          <v-pagination
+            v-model="page"
+            :length="productQ"
+            color="pink"
+          ></v-pagination></div
+      ></v-col>
     </v-row>
   </div>
 </template>
@@ -141,10 +110,14 @@ export default {
       "衣鞋包錶",
     ],
     searchtext: "",
+    productQ: 4,
+    page: 1,
   }),
   methods: {
     search() {
-      alert(this.searchtext);
+      if (this.searchtext.length != 0) {
+        alert(this.searchtext);
+      }
     },
   },
 };
