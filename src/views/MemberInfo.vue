@@ -6,7 +6,7 @@
           btn
         }}</v-btn>
         <v-btn
-          v-show="NewuserImg.image !== ''"
+          v-show="NewuserImg.image !== '' && imgedit === true"
           @click="upload"
           class="mb-4 mx-16"
           >上傳</v-btn
@@ -18,7 +18,6 @@
           height="200"
           width="200"
           class="mx-auto"
-          @click.native="upload"
           ><v-img width="200" height="200" :src="userImg"></v-img
         ></v-card>
         <img-inputer
