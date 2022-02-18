@@ -23,8 +23,8 @@
                 <v-list-item-action>
                   <v-btn
                     outlined
-                    color="light-green"
-                    class="mt-3"
+                    color="amber"
+                    class="mt-3 mr-4"
                     v-bind="attrs"
                     v-on="on"
                     @click="edit(index)"
@@ -33,10 +33,35 @@
                   </v-btn>
                 </v-list-item-action>
                 <v-list-item-action v-if="productItem.sale">
-                  <v-btn color="error" class="mt-3"> 下架 </v-btn>
+                  <v-btn
+                    outlined
+                    color="error"
+                    class="mt-3"
+                    @click="saleing(index, false)"
+                  >
+                    下架
+                  </v-btn>
                 </v-list-item-action>
                 <v-list-item-action v-else>
-                  <v-btn color="success" class="mt-3"> 上架 </v-btn>
+                  <v-btn
+                    outlined
+                    color="success"
+                    class="mt-3"
+                    @click="saleing(index, true)"
+                  >
+                    上架
+                  </v-btn>
+                </v-list-item-action>
+                <v-list-item-action>
+                  <v-btn
+                    dark
+                    color="red"
+                    class="mt-3 ml-8"
+                    @click="openDel(index)"
+                  >
+                    <v-icon left> mdi-trash-can </v-icon>
+                    刪除
+                  </v-btn>
                 </v-list-item-action>
               </v-list-item>
               <v-divider></v-divider>
@@ -177,29 +202,9 @@
                   </template>
                 </v-col>
               </v-row>
-              <v-snackbar
-                top
-                :color="reColor"
-                multi-line
-                v-model="snackbar2"
-                timeout="1500"
-                transition="scale-transition"
-                class="mt-16"
-              >
-                <h3 class="ml-4">{{ reText }}</h3>
-                <template v-slot:action="{ attrs }">
-                  <v-btn
-                    color="blue lighten-5"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar2 = false"
-                  >
-                    Close
-                  </v-btn>
-                </template>
-              </v-snackbar>
             </v-form>
             <v-btn
+              :disabled="!valid"
               outlined
               color="success"
               class="mb-4 mx-2"
@@ -218,7 +223,47 @@
           </div>
         </v-card>
       </v-dialog>
+      <v-snackbar
+        top
+        :color="reColor"
+        multi-line
+        v-model="snackbar2"
+        timeout="1500"
+        transition="scale-transition"
+        class="mt-16"
+      >
+        <h3 class="ml-4">{{ reText }}</h3>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="blue lighten-5"
+            text
+            v-bind="attrs"
+            @click="snackbar2 = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-card>
+    <v-dialog v-model="dialog2" width="500">
+      <v-card>
+        <v-card-title class="text-h5 red white--text"> 刪除商品? </v-card-title>
+
+        <v-card-text class="mt-6">
+          <h3>商品一旦刪除即無法回復，是否確認刪除 ?</h3>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="gray" outlined text @click="del()"> 確認刪除 </v-btn>
+          <v-btn color="red" outlined text @click="dialog2 = false">
+            取消
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -227,6 +272,7 @@ export default {
   data: () => ({
     products: [],
     dialog: false,
+    dialog2: false,
     product: [
       { class: "商品名稱:", name: "請輸入商品名稱", edit: false, value: "" },
       {
@@ -271,7 +317,7 @@ export default {
         src: "",
       },
     ],
-    productImg: "",
+    productImg: null,
     productId: "",
     title: "",
     content: "",
@@ -280,8 +326,13 @@ export default {
     reColor: "",
     reText: "",
     snackbar2: false,
+    DelIndex: Number,
   }),
   methods: {
+    openDel(e) {
+      this.DelIndex = e;
+      this.dialog2 = true;
+    },
     edit(index) {
       this.product[0].value = this.products[index].name;
       this.product[1].choose = this.products[index].class;
@@ -294,8 +345,88 @@ export default {
       this.content = this.products[index].introContent;
       this.productId = this.products[index]._id;
     },
-    editProduct() {
-      console.log("A");
+    async editProduct() {
+      const valid = this.$refs.bigform.validate();
+      if (!valid) return;
+      const bigform = {
+        name: this.product[0].value,
+        class: this.product[1].choose,
+        state: this.product[2].choose,
+        image: this.productImg,
+        barter: this.product[3].choose,
+        quantity: this.product[4].choose,
+        goal: this.product[5].value,
+        userId: this.userId,
+        introTitle: this.content,
+        introContent: this.content,
+      };
+      const fd = new FormData();
+      for (const key in bigform) {
+        if (key !== "_id") {
+          fd.append(key, bigform[key]);
+        }
+      }
+      try {
+        const { data } = await this.api.patch(
+          "/products/" + this.productId,
+          fd,
+          {
+            headers: {
+              authorization: "Bearer " + this.token,
+            },
+          }
+        );
+        this.products = data.result;
+        this.reText = "編輯成功";
+        this.reColor = "success";
+        this.snackbar2 = true;
+        this.dialog = false;
+      } catch (error) {
+        this.reText = "error";
+        this.reColor = "red";
+        this.snackbar2 = true;
+      }
+    },
+    async saleing(index, e) {
+      const bigform = {
+        sale: e,
+      };
+      console.log(bigform);
+      const fd = new FormData();
+      for (const key in bigform) {
+        if (key !== "_id") {
+          fd.append(key, bigform[key]);
+        }
+      }
+      try {
+        const { data } = await this.api.patch(
+          "/products/" + this.products[index]._id,
+          fd,
+          {
+            headers: {
+              authorization: "Bearer " + this.token,
+            },
+          }
+        );
+        this.products = data.result;
+        this.reText = "編輯成功";
+        this.reColor = "success";
+        this.snackbar2 = true;
+        this.dialog = false;
+      } catch (error) {
+        this.reText = "error";
+        this.reColor = "red";
+        this.snackbar2 = true;
+      }
+    },
+    async del() {
+      try {
+        await this.api.delete("/products/" + this.products[this.DelIndex]._id);
+        this.dialog2 = false;
+      } catch (error) {
+        console.log(error);
+        alert("刪除失敗");
+      }
     },
   },
   async created() {
@@ -306,9 +437,20 @@ export default {
         },
       });
       this.products = data.result;
-      console.log(data.result);
     } catch (error) {
-      alert(error);
+      alert("網路錯誤");
+    }
+  },
+  async updated() {
+    try {
+      const { data } = await this.api.get("/products/" + this.userId, {
+        headers: {
+          authorization: "Bearer " + this.token,
+        },
+      });
+      this.products = data.result;
+    } catch (error) {
+      alert("網路錯誤");
     }
   },
   computed: {

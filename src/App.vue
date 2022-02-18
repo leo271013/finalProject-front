@@ -27,7 +27,7 @@
                 <h2>商品頁(測試用)</h2>
               </v-tab>
               <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
-              <v-tab class="px-6" to="/grouppage">
+              <v-tab class="px-6" to="/grouppage" disabled>
                 <h2>團體募集</h2>
               </v-tab>
 

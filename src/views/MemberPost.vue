@@ -240,10 +240,9 @@ export default {
         quantity: this.product[4].choose,
         goal: this.product[5].value,
         userId: this.userId,
-        introTitle: this.content,
+        introTitle: this.title,
         introContent: this.content,
       };
-      console.log(bigform);
       const fd = new FormData();
       for (const key in bigform) {
         if (key !== "_id") {
@@ -260,8 +259,18 @@ export default {
         this.reText = "上架成功";
         this.reColor = "success";
         this.snackbar2 = true;
+        this.product[0].value = "";
+        this.product[1].choose = "";
+        this.product[2].choose = "";
+        this.productImg = "";
+        this.product[3].choose = "";
+        this.product[4].choose = "";
+        this.product[5].value = "";
+        this.userId = "";
+        this.title = "";
+        this.content = "";
       } catch (error) {
-        this.reText = "失敗";
+        this.reText = "上架失敗";
         this.reColor = "red";
         this.snackbar2 = true;
       }

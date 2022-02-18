@@ -31,8 +31,8 @@
               <v-card max-width="120" class="ml-16">
                 <v-list nav class="text-center pa-0">
                   <v-list-item-group mandatory>
-                    <div v-for="(item, i) in items" :key="i">
-                      <v-list-item class="mb-0" color="pink">
+                    <div v-for="(item, i) in items" :key="item[i]">
+                      <v-list-item class="mb-0" color="pink" @click="type(i)">
                         <v-list-item-content>
                           <v-list-item-title v-text="item"></v-list-item-title>
                         </v-list-item-content>
@@ -47,7 +47,11 @@
             <v-row justify="center">
               <v-col :cols="12">
                 <v-row>
-                  <v-col :cols="3" v-for="n in 8" :key="n">
+                  <v-col
+                    :cols="3"
+                    v-for="product in products"
+                    :key="product.name"
+                  >
                     <template>
                       <v-card max-width="250" max-height="280" hover>
                         <template slot="progress">
@@ -61,16 +65,14 @@
                         <v-img
                           width="250"
                           height="185"
-                          src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                          :src="product.image"
                         ></v-img>
 
-                        <v-card-title class="py-1"
-                          >Cafe Badilico {{ n }}</v-card-title
-                        >
+                        <v-card-title class="py-1">{{
+                          product.name
+                        }}</v-card-title>
 
-                        <v-card-text
-                          >新手全身文明委託一口氣不需要顯集反饋戰爭之間無聊和平島。
-                        </v-card-text>
+                        <v-card-text>{{ product.introTitle }}</v-card-text>
                       </v-card>
                     </template></v-col
                   >
@@ -112,6 +114,7 @@ export default {
     searchtext: "",
     productQ: 4,
     page: 1,
+    products: [],
   }),
   methods: {
     search() {
@@ -119,6 +122,24 @@ export default {
         alert(this.searchtext);
       }
     },
+    async type(i) {
+      try {
+        const { data } = await this.api.get(
+          "/products/" + this.products[i].class
+        );
+        this.products = data.result;
+      } catch (error) {
+        alert("網路錯誤");
+      }
+    },
+  },
+  async created() {
+    try {
+      const { data } = await this.api.get("/products");
+      this.products = data.result;
+    } catch (error) {
+      alert("網路錯誤");
+    }
   },
 };
 </script>
