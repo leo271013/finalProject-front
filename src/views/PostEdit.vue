@@ -280,7 +280,6 @@ export default {
         edit: false,
         item: [
           "電腦",
-          "電腦周邊",
           "通訊",
           "數位",
           "家電",

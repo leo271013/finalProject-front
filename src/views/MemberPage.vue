@@ -1,7 +1,7 @@
 <template>
   <div class="memberpage">
     <v-row v-if="user.isLogin" class="mt-8 mx-16">
-      <v-col :cols="2">
+      <v-col :cols="2" class="mt-8">
         <template>
           <v-card max-width="150" class="mt-16 transparent">
             <v-list flat class="text-center py-0">

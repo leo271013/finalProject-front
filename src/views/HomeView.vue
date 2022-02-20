@@ -32,7 +32,11 @@
                 <v-list nav class="text-center pa-0">
                   <v-list-item-group mandatory>
                     <div v-for="(item, i) in items" :key="item[i]">
-                      <v-list-item class="mb-0" color="pink" @click="type(i)">
+                      <v-list-item
+                        class="mb-0"
+                        color="pink"
+                        @click="type(item)"
+                      >
                         <v-list-item-content>
                           <v-list-item-title v-text="item"></v-list-item-title>
                         </v-list-item-content>
@@ -53,7 +57,12 @@
                     :key="product.name"
                   >
                     <template>
-                      <v-card max-width="250" max-height="280" hover>
+                      <v-card
+                        max-width="250"
+                        max-height="280"
+                        @click="into(product)"
+                        hover
+                      >
                         <template slot="progress">
                           <v-progress-linear
                             color="deep-purple"
@@ -101,7 +110,6 @@ export default {
     items: [
       "全部",
       "電腦",
-      "電腦周邊",
       "通訊",
       "數位",
       "家電",
@@ -122,20 +130,30 @@ export default {
         alert(this.searchtext);
       }
     },
-    async type(i) {
-      try {
-        const { data } = await this.api.get(
-          "/products/" + this.products[i].class
-        );
-        this.products = data.result;
-      } catch (error) {
-        alert("網路錯誤");
+    async type(name) {
+      if (name === "全部") {
+        try {
+          const { data } = await this.api.get("/showProducts");
+          this.products = data.result;
+        } catch (error) {
+          alert("網路錯誤");
+        }
+      } else {
+        try {
+          const { data } = await this.api.get("/showProducts/" + name);
+          this.products = data.result;
+        } catch (error) {
+          alert("網路錯誤");
+        }
       }
+    },
+    into(e) {
+      this.$store.commit("into", e);
     },
   },
   async created() {
     try {
-      const { data } = await this.api.get("/products");
+      const { data } = await this.api.get("/showProducts");
       this.products = data.result;
     } catch (error) {
       alert("網路錯誤");

@@ -1,13 +1,5 @@
 <template>
   <div class="memberpost text-center">
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="productupload()"
-      class="mb-4"
-    >
-      商品上架
-    </v-btn>
     <div class="content">
       <div class="mx-16">
         <v-form ref="bigform" v-model="valid">
@@ -165,6 +157,14 @@
         </v-form>
       </div>
     </div>
+    <v-btn
+      :disabled="!valid"
+      color="success"
+      @click="productupload()"
+      class="mt-4"
+    >
+      商品上架
+    </v-btn>
   </div>
 </template>
 <script>
@@ -178,7 +178,6 @@ export default {
         edit: false,
         item: [
           "電腦",
-          "電腦周邊",
           "通訊",
           "數位",
           "家電",
@@ -250,12 +249,11 @@ export default {
         }
       }
       try {
-        const { data } = await this.api.post("/products", fd, {
+        await this.api.post("/products", fd, {
           headers: {
             authorization: "Bearer " + this.token,
           },
         });
-        console.log(data.result);
         this.reText = "上架成功";
         this.reColor = "success";
         this.snackbar2 = true;
@@ -266,7 +264,6 @@ export default {
         this.product[3].choose = "";
         this.product[4].choose = "";
         this.product[5].value = "";
-        this.userId = "";
         this.title = "";
         this.content = "";
       } catch (error) {

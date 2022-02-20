@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "@/plugins/axios.js";
 import createPersistedState from "vuex-persistedstate";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     userImg: "",
     sColor: "",
     sText: "",
-    uploadText: "上傳成功，請稍後重新整理頁面",
+    uploadText: "上傳成功，請稍後．．．",
+    product: {},
   },
   getters: {
     user(state) {
@@ -59,6 +61,10 @@ export default new Vuex.Store({
     uploadimg(state, data) {
       state.userInfo.image = data.image;
     },
+    into(state, data) {
+      state.product = data;
+      router.push("/productpage");
+    },
   },
   actions: {
     async login({ commit, state }, form) {
@@ -90,6 +96,7 @@ export default new Vuex.Store({
           ...state.userInfo,
           image: data.result.image,
         };
+        location.reload();
       } catch (error) {
         console.log(error);
       }

@@ -1,28 +1,29 @@
 <template>
-  <div class="productpage">
-    <div class="mt-16 mx-16">
+  <div class="productpage ml-16 pl-8">
+    <div class="mt-16 mx-16 pl-16">
       <v-breadcrumbs :items="address" large></v-breadcrumbs>
-      <v-row class="mt-8 mx-16">
-        <v-col
-          ><v-img
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            width="500"
-          ></v-img
-        ></v-col>
+      <v-row class="mt-8 ml-8">
+        <v-col><v-img :src="img" width="500"></v-img></v-col>
         <v-col
           ><v-list flat>
             <v-subheader class="text-h4 mb-8">商品內容</v-subheader>
-            <v-list-item v-for="(item, index) in product" :key="item">
+            <v-list-item v-for="item in product" :key="item.title">
               <v-list-item-icon>
                 <v-icon></v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title class="text-h6"
-                  >{{ index }}:{{ item }}</v-list-item-title
+                  >{{ item.title }} : {{ item.content }}</v-list-item-title
                 >
               </v-list-item-content>
             </v-list-item>
-          </v-list></v-col
+          </v-list>
+          <v-btn x-large color="success" class="mt-16 mx-8">聯絡賣家</v-btn
+          ><v-btn v-if="!user.isAdmin" outlined color="red" class="mt-16"
+            >檢舉</v-btn
+          ><v-btn v-if="user.isAdmin" outlined color="red" class="mt-16"
+            >下架</v-btn
+          ></v-col
         >
       </v-row>
       <v-divider class="my-12"></v-divider>
@@ -34,7 +35,6 @@
               <v-card flat class="mx-auto" width="600">
                 <v-carousel
                   cycle
-                  height="400"
                   hide-delimiter-background
                   show-arrows-on-hover
                 >
@@ -47,17 +47,10 @@
                   ></v-carousel-item> </v-carousel
               ></v-card>
 
-              <v-card-title> Top western road trips </v-card-title>
-
-              <v-card-subtitle> 1,000 miles of wonder </v-card-subtitle>
+              <v-card-title> {{ title }} </v-card-title>
 
               <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than
-                he could deliver. You won't have time for sleeping, soldier, not
-                with all the bed making you'll be doing. Then we'll go with that
-                data file! Hey, you add a one and two zeros to that or we walk!
-                You're going to do his laundry? I've got to find a way to
-                escape.
+                {{ content }}
               </v-card-text>
             </v-card>
           </template>
@@ -70,14 +63,14 @@
 export default {
   name: "ProductPage",
   data: () => ({
-    product: {
-      商品名稱: "無敵風火輪",
-      分類: "家電",
-      商品新舊: "全新",
-      以物易物: "是",
-      數量: "1",
-      交換對象: "iPhone 13 pro max 1TB",
-    },
+    product: [
+      { title: "商品名稱", content: "" },
+      { title: "分類", content: "" },
+      { title: "商品新舊", content: "" },
+      { title: "以物易物", content: "" },
+      { title: "數量", content: "" },
+      { title: "交換對象", content: "" },
+    ],
     items: [
       {
         src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
@@ -102,7 +95,31 @@ export default {
         to: "/",
       },
     ],
+    title: "",
+    content: "",
+    img: "",
   }),
   methods: {},
+  computed: {
+    products() {
+      return this.$store.state.product;
+    },
+    user() {
+      return this.$store.getters.user;
+    },
+  },
+  async mounted() {
+    this.product[0].content = this.products.name;
+    this.product[1].content = this.products.class;
+    this.product[2].content = this.products.state;
+    this.product[3].content = this.products.barter;
+    this.product[4].content = this.products.quantity;
+    this.product[5].content = this.products.goal;
+    this.title = this.products.introTitle;
+    this.content = this.products.introContent;
+    this.img = this.products.image;
+    this.items[0].src = this.products.image;
+  },
+  updated() {},
 };
 </script>

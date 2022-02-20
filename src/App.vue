@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="bg" class="px-xl-16 pt-10">
-      <v-app-bar fixed src="~./assets/bar.svg" height="110">
+      <v-app-bar elevation="1" fixed src="~./assets/bar.svg" height="110">
         <router-link class="logo mt-6" to="/"
           ><img src="~./assets/logo.svg" alt="logo" contain width="300"
         /></router-link>
@@ -23,9 +23,6 @@
               active-class="fontColor"
             >
               <v-tabs-slider></v-tabs-slider>
-              <v-tab class="px-6" to="/productpage">
-                <h2>商品頁(測試用)</h2>
-              </v-tab>
               <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
               <v-tab class="px-6" to="/grouppage" disabled>
                 <h2>團體募集</h2>
@@ -185,7 +182,6 @@
 
         <v-spacer></v-spacer>
 
-        <template v-if="user.isLogin"> </template>
         <VueToggles
           :value="isToggled"
           @click="turnOn"

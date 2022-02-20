@@ -91,7 +91,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "productpage" */ "../views/ProductPage.vue"),
     meta: {
-      title: "測試頁 | Swapper",
+      title: "商品頁 | Swapper",
     },
   },
 ];

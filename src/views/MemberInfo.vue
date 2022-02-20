@@ -149,6 +149,11 @@ export default {
       this.imgedit ? (this.btn = "取消變更") : (this.btn = "變更頭像");
     },
   },
+  updated: {
+    update() {
+      return this.$store.state.userImg;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
