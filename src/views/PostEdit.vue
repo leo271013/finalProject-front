@@ -1,13 +1,13 @@
 <template>
   <div class="PostEdit">
-    <v-card class="mt-16">
-      <v-toolbar dark flat shaped color="blue">
-        <v-toolbar-title>上架商品編輯</v-toolbar-title>
+    <v-card shaped class="mt-16">
+      <v-toolbar dark flat shaped color="red">
+        <v-toolbar-title class="px-2">上架商品編輯</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-dialog v-model="dialog" width="600px">
         <template v-slot:activator="{ on, attrs }">
-          <v-list flat subheader three-line>
+          <v-list flat subheader three-line class="pb-0">
             <v-subheader>商品列表</v-subheader>
             <div
               v-for="(productItem, index) in products"
@@ -440,17 +440,31 @@ export default {
       alert("網路錯誤");
     }
   },
-  async updated() {
-    try {
-      const { data } = await this.api.get("/products/" + this.userId, {
-        headers: {
-          authorization: "Bearer " + this.token,
-        },
-      });
-      this.products = data.result;
-    } catch (error) {
-      alert("網路錯誤");
-    }
+  watch: {
+    dialog: async function () {
+      try {
+        const { data } = await this.api.get("/products/" + this.userId, {
+          headers: {
+            authorization: "Bearer " + this.token,
+          },
+        });
+        this.products = data.result;
+      } catch (error) {
+        alert("網路錯誤");
+      }
+    },
+    dialog2: async function () {
+      try {
+        const { data } = await this.api.get("/products/" + this.userId, {
+          headers: {
+            authorization: "Bearer " + this.token,
+          },
+        });
+        this.products = data.result;
+      } catch (error) {
+        alert("網路錯誤");
+      }
+    },
   },
   computed: {
     userId() {

@@ -7,21 +7,8 @@
           clearable
           v-model="searchtext"
           color="pink"
-          @keyup.enter="search"
           class="mb-2"
         >
-          <v-btn
-            height="22"
-            width="22"
-            icon
-            slot="append"
-            @click="search"
-            plain
-            class="mx-2"
-            color="pink"
-          >
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
         </v-text-field>
       </v-col>
       <v-col cols="12" class="pa-0"
@@ -50,10 +37,10 @@
           <v-col>
             <v-row justify="center">
               <v-col :cols="12">
-                <v-row>
+                <v-row class="px-16">
                   <v-col
                     :cols="3"
-                    v-for="product in products"
+                    v-for="product in search"
                     :key="product.name"
                   >
                     <template>
@@ -71,11 +58,7 @@
                           ></v-progress-linear>
                         </template>
 
-                        <v-img
-                          width="250"
-                          height="185"
-                          :src="product.image"
-                        ></v-img>
+                        <v-img height="185" :src="product.image"></v-img>
 
                         <v-card-title class="py-1">{{
                           product.name
@@ -125,11 +108,6 @@ export default {
     products: [],
   }),
   methods: {
-    search() {
-      if (this.searchtext.length != 0) {
-        alert(this.searchtext);
-      }
-    },
     async type(name) {
       if (name === "全部") {
         try {
@@ -158,6 +136,15 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
+  },
+  computed: {
+    search() {
+      return this.products.filter((item) => {
+        if (item.name.toLowerCase().includes(this.searchtext.toLowerCase())) {
+          return true;
+        }
+      });
+    },
   },
 };
 </script>

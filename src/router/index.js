@@ -45,7 +45,7 @@ const routes = [
             /* webpackChunkName: "memberpage" */ "../views/MemberInfo.vue"
           ),
         meta: {
-          title: "會員專區 | 購物網",
+          title: "會員專區 | Swapper",
           login: true,
         },
       },
@@ -57,7 +57,7 @@ const routes = [
             /* webpackChunkName: "memberpage" */ "../views/MemberPost.vue"
           ),
         meta: {
-          title: "商品刊登 | 購物網",
+          title: "商品刊登 | Swapper",
           login: true,
         },
       },
@@ -67,7 +67,7 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "memberpage" */ "../views/PostEdit.vue"),
         meta: {
-          title: "商品管理 | 購物網",
+          title: "商品管理 | Swapper",
           login: true,
         },
       },
@@ -79,7 +79,7 @@ const routes = [
             /* webpackChunkName: "memberpage" */ "../views/MemberMessage.vue"
           ),
         meta: {
-          title: "訊息 | 購物網",
+          title: "訊息 | Swapper",
           login: true,
         },
       },

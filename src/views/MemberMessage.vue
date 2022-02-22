@@ -1,15 +1,15 @@
 <template>
   <div class="MemberMessage">
-    <v-card shaped color="blue lighten-5" class="mt-16">
+    <v-card shaped color="orange lighten-5" class="mt-16">
       <v-row>
-        <v-col cols="4" class="pa-0">
-          <v-toolbar color="light-blue" dark flat shaped>
-            <v-toolbar-title>訊息</v-toolbar-title>
+        <v-col cols="4" class="py-0">
+          <v-toolbar color="orange" dark flat shaped>
+            <v-toolbar-title class="px-2">訊息</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
 
           <v-list three-line class="chat pa-0">
-            <v-list-item-group :key="item">
+            <v-list-item-group>
               <template v-for="(item, index) in items">
                 <v-divider :key="index" inset></v-divider>
                 <v-list-item :key="item.title">
@@ -28,8 +28,49 @@
             </v-list-item-group>
           </v-list>
         </v-col>
-        <v-divider vertical></v-divider>
-        <v-col></v-col>
+        <!-- <v-divider vertical></v-divider> -->
+        <v-col>
+          <div class="content">
+            <!-- <div
+              (v-for="message in messages"
+              :key="message._id"
+              :class="{ 'flex-row-reverse': isMe(message.sender) }"
+              class="d-flex"
+              align-center
+            >
+              <v-avatar
+                :color="
+                  isMe(message.sender) ? 'blue darken-1' : 'grey darken-1'
+                "
+                ><v-img
+                  :src="
+                    'https://source.boringavatars.com/beam/120/' +
+                    message.sender
+                  "
+                ></v-img
+              ></v-avatar>
+              <v-chip class="ma-2" color="" text-color=""> primary </v-chip>
+            </div> -->
+            <div>
+              <v-chip class="ma-2" color="" text-color=""> primary </v-chip>
+            </div>
+            <div>
+              <v-chip class="ma-2" color="green" text-color="white">
+                Green Chip
+              </v-chip>
+            </div>
+          </div>
+          <v-text-field
+            clearable
+            outlined
+            label="輸入訊息"
+            background-color="white"
+            append-outer-icon="mdi-send"
+            class="mr-4"
+            @click:append-outer="sendMessage"
+            @keydown.enter="sendMessage"
+          ></v-text-field>
+        </v-col>
       </v-row>
     </v-card>
   </div>
@@ -67,12 +108,138 @@ export default {
           '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
       },
     ],
+    text: "",
+    sending: false,
+    messages: [],
+    timer: 0,
+    fetchingOld: false,
+    fetchOldest: false,
+    selected: undefined,
+    users: [],
   }),
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+    chatid() {
+      return this.$store.state.chatid;
+    },
+  },
+  methods: {
+    sendMessage() {},
+  },
+  // methods: {
+  //   isMe(id) {
+  //     return id === this.user._id;
+  //   },
+  //   async sendMessage() {
+  //     if (
+  //       this.sending ||
+  //       this.text.length === 0 ||
+  //       this.member._id.length === 0
+  //     )
+  //       return;
+  //     this.sending = true;
+  //     try {
+  //       const { data } = await this.api.post(
+  //         `/chats/members/${this.member._id}/messages`,
+  //         { text: this.text },
+  //         {
+  //           headers: {
+  //             authorization: "Bearer " + this.user.token,
+  //           },
+  //         }
+  //       );
+  //       this.messages.push(data.result);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //     this.sending = false;
+  //     this.text = "";
+  //   },
+  //   async fetchNew() {
+  //     try {
+  //       const date = this.messages[this.messages.length - 1]?.date || "";
+  //       const { data } = await this.api.get(
+  //         `/chats/members/${this.member._id}?gt=${date}`,
+  //         {
+  //           headers: {
+  //             authorization: "Bearer " + this.user.token,
+  //           },
+  //         }
+  //       );
+  //       if (data.result.length > 0) {
+  //         this.messages.push(...data.result);
+  //         Notification.requestPermission((permission) => {
+  //           if (permission === "granted") {
+  //             const notification = new Notification("聊天室有新訊息", {
+  //               body: `${this.member.account} 傳了 ${data.result.length} 個新訊息`,
+  //               icon: "https://cdn-icons.flaticon.com/png/512/2174/premium/2174653.png?token=exp=1643011533~hmac=4335fea76a9682e849c03394a9c0667e",
+  //             });
+  //             notification.onclick = () => {};
+  //           }
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   },
+  //   async fetchOld() {
+  //     if (this.fetchingOld) return;
+  //     this.fetchingOld = true;
+  //     try {
+  //       const date = this.messages[0]?.date || "";
+  //       const { data } = await this.api.get(
+  //         `/chats/members/${this.member._id}?lt=${date}`,
+  //         {
+  //           headers: {
+  //             authorization: "Bearer " + this.user.token,
+  //           },
+  //         }
+  //       );
+  //       if (data.result.length === 0) {
+  //         this.fetchOldest = true;
+  //       } else {
+  //         this.messages.unshift(...data.result.reverse());
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //     this.fetchingOld = false;
+  //   },
+  // },
+  // async created() {
+  //   if (this.member._id.length === 0) return;
+  //   try {
+  //     const { data } = await this.api.get("/chats/members/" + this.member._id, {
+  //       headers: {
+  //         authorization: "Bearer " + this.user.token,
+  //       },
+  //     });
+  //     if (data.result.length === 0) {
+  //       this.fetchOldest = true;
+  //     } else {
+  //       this.messages = data.result;
+  //     }
+  //     this.timer = setInterval(this.fetchNew, 3000);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // },
+  destroyed() {
+    clearInterval(this.timer);
+  },
+  created() {
+    console.log(this.chatid);
+  },
 };
 </script>
 <style lang="scss" scoped>
 .chat {
   overflow-y: scroll;
   height: 50vh;
+}
+.content {
+  height: 90%;
 }
 </style>

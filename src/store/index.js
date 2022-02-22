@@ -18,6 +18,7 @@ export default new Vuex.Store({
     sText: "",
     uploadText: "上傳成功，請稍後．．．",
     product: {},
+    chatid: "",
   },
   getters: {
     user(state) {

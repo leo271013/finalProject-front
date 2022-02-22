@@ -1,26 +1,33 @@
 <template>
-  <div class="productpage ml-16 pl-8">
-    <div class="mt-16 mx-16 pl-16">
+  <div class="productpage mx-8 px-8">
+    <div class="mt-16 mx-8 px-8">
       <v-breadcrumbs :items="address" large></v-breadcrumbs>
       <v-row class="mt-8 ml-8">
-        <v-col><v-img :src="img" width="500"></v-img></v-col>
-        <v-col
+        <v-col cols="6"><v-img :src="img" width="500"></v-img></v-col>
+        <v-col cols="4" class="ml-16"
           ><v-list flat>
-            <v-subheader class="text-h4 mb-8">商品內容</v-subheader>
+            <v-subheader class="text-h4 mb-8 pink--text">商品內容</v-subheader>
             <v-list-item v-for="item in product" :key="item.title">
               <v-list-item-icon>
                 <v-icon></v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title class="text-h6"
-                  >{{ item.title }} : {{ item.content }}</v-list-item-title
+                <v-list-item-title class="text-h5"
+                  >{{ item.title }} :
+                  <span class="text-h6">
+                    {{ item.content }}</span
+                  ></v-list-item-title
                 >
               </v-list-item-content>
             </v-list-item>
           </v-list>
-          <v-btn x-large color="success" class="mt-16 mx-8">聯絡賣家</v-btn
-          ><v-btn v-if="!user.isAdmin" outlined color="red" class="mt-16"
-            >檢舉</v-btn
+          <v-btn
+            block
+            color="success"
+            class="mt-6"
+            @click="sendMessage()"
+            :disabled="isMe"
+            >聯絡賣家</v-btn
           ><v-btn v-if="user.isAdmin" outlined color="red" class="mt-16"
             >下架</v-btn
           ></v-col
@@ -60,6 +67,7 @@
   </div>
 </template>
 <script>
+import router from "@/router";
 export default {
   name: "ProductPage",
   data: () => ({
@@ -99,13 +107,25 @@ export default {
     content: "",
     img: "",
   }),
-  methods: {},
+  methods: {
+    sendMessage() {
+      if (!this.user.isLogin) {
+        alert("請先登入");
+      } else {
+        // 這邊要POST
+      }
+      router.push("/memberpage/membermessage");
+    },
+  },
   computed: {
     products() {
       return this.$store.state.product;
     },
     user() {
       return this.$store.getters.user;
+    },
+    isMe() {
+      return this.products.userId === this.user.userId ? true : false;
     },
   },
   async mounted() {
@@ -119,7 +139,7 @@ export default {
     this.content = this.products.introContent;
     this.img = this.products.image;
     this.items[0].src = this.products.image;
+    document.title = this.products.name + " | Swapper";
   },
-  updated() {},
 };
 </script>

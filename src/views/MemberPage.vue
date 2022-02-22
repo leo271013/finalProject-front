@@ -34,13 +34,8 @@ export default {
       { name: "上架商品編輯", url: "/memberpage/postedit" },
       { name: "訊息", url: "/memberpage/membermessage" },
     ],
-    searchtext: "",
   }),
-  methods: {
-    search() {
-      alert(this.searchtext);
-    },
-  },
+  methods: {},
   computed: {
     user() {
       return this.$store.getters.user;
