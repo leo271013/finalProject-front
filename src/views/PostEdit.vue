@@ -14,7 +14,13 @@
               :key="productItem.name"
             >
               <v-list-item>
-                <img width="100" :src="productItem.image" class="mr-8" />
+                <v-img
+                  max-width="90"
+                  max-height="90"
+                  contain
+                  :src="productItem.image"
+                  class="mr-8"
+                />
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">{{
                     productItem.name
@@ -23,7 +29,7 @@
                 <v-list-item-action>
                   <v-btn
                     outlined
-                    color="amber"
+                    color="orange"
                     class="mt-3 mr-4"
                     v-bind="attrs"
                     v-on="on"

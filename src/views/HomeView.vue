@@ -4,14 +4,13 @@
       <v-col :cols="3">
         <v-text-field
           label="搜尋"
-          clearable
           v-model="searchtext"
           color="pink"
           class="mb-2"
         >
         </v-text-field>
       </v-col>
-      <v-col cols="12" class="pa-0"
+      <v-col cols="12" class="pa-0 colHeight"
         ><v-row>
           <v-col :cols="2">
             <template>
@@ -103,7 +102,8 @@ export default {
       "衣鞋包錶",
     ],
     searchtext: "",
-    productQ: 4,
+    productQ: 1,
+    productP: [],
     page: 1,
     products: [],
   }),
@@ -116,12 +116,38 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
+        this.productQ = Math.floor(this.products.length / 8) + 1;
+        this.productP = [];
+        if (this.products.length > 8) {
+          for (let i = 0; i < 8; i++) {
+            let start = (this.page - 1) * 8;
+            this.productP.push(this.products[start + i]);
+          }
+        } else {
+          for (let i = 0; i < this.products.length; i++) {
+            let start = (this.page - 1) * 8;
+            this.productP.push(this.products[start + i]);
+          }
+        }
       } else {
         try {
           const { data } = await this.api.get("/showProducts/" + name);
           this.products = data.result;
         } catch (error) {
           alert("網路錯誤");
+        }
+        this.productQ = Math.floor(this.products.length / 8) + 1;
+        this.productP = [];
+        if (this.products.length > 8) {
+          for (let i = 0; i < 8; i++) {
+            let start = (this.page - 1) * 8;
+            this.productP.push(this.products[start + i]);
+          }
+        } else {
+          for (let i = 0; i < this.products.length; i++) {
+            let start = (this.page - 1) * 8;
+            this.productP.push(this.products[start + i]);
+          }
         }
       }
     },
@@ -136,6 +162,18 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
+    this.productQ = Math.floor(this.products.length / 8) + 1;
+    if (this.products.length > 8) {
+      for (let i = 0; i < 8; i++) {
+        let start = (this.page - 1) * 8;
+        this.productP.push(this.products[start + i]);
+      }
+    } else {
+      for (let i = 0; i < this.products.length; i++) {
+        let start = (this.page - 1) * 8;
+        this.productP.push(this.products[start + i]);
+      }
+    }
   },
   computed: {
     search() {
@@ -146,6 +184,21 @@ export default {
       });
     },
   },
+  watch: {
+    page: function (newN) {
+      this.productP = [];
+      let start = (newN - 1) * 8;
+      if (newN === 1) {
+        for (let i = 0; i < 8; i++) {
+          this.productP.push(this.products[start + i]);
+        }
+      } else {
+        for (let i = 0; i < this.products.length - start; i++) {
+          this.productP.push(this.products[start + i]);
+        }
+      }
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -154,5 +207,8 @@ export default {
 }
 .white {
   color: white !important;
+}
+.colHeight {
+  height: 550px;
 }
 </style>

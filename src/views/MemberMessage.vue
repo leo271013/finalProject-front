@@ -1,7 +1,7 @@
 <template>
   <div class="MemberMessage">
     <v-card shaped color="orange lighten-5" class="mt-16">
-      <v-row>
+      <v-row class="hidden">
         <v-col cols="4" class="py-0">
           <v-toolbar color="orange" dark flat shaped>
             <v-toolbar-title class="px-2">訊息</v-toolbar-title>
@@ -27,9 +27,9 @@
           </v-list>
         </v-col>
         <!-- <v-divider vertical></v-divider> -->
-        <v-col v-if="id.length !== 0">
+        <v-col v-if="id.length !== 0" class="pr-8">
           <div class="content">
-            <div class="d-flex" justify-center>
+            <div class="d-flex justify-center">
               <v-btn
                 outlined
                 @click="fetchOld"
@@ -41,14 +41,14 @@
             <div
               v-for="message in messages"
               :key="message._id"
-              :class="{ 'flex-row-reverse': isMe(message.sender) }"
-              class="d-flex"
+              :class="{
+                'flex-row-reverse': isMe(message.sender),
+                'd-flex': true,
+                'my-4': true,
+              }"
               align-center
             >
-              <v-avatar
-                :color="
-                  isMe(message.sender) ? 'blue darken-1' : 'grey darken-1'
-                "
+              <v-avatar class="mx-4"
                 ><v-img
                   :src="
                     'https://source.boringavatars.com/beam/120/' +
@@ -58,10 +58,11 @@
               ><v-tooltip top
                 ><template v-slot:activator="{ on, attrs }"
                   ><v-chip
+                    dark
                     v-bind="attrs"
                     v-on="on"
                     :color="
-                      isMe(message.sender) ? 'blue darken-1' : 'grey darken-1'
+                      isMe(message.sender) ? 'pink' : 'deep-orange darken-1'
                     "
                     >{{ message.text }}</v-chip
                   ></template
@@ -70,14 +71,6 @@
                 }}</span></v-tooltip
               >
             </div>
-            <!-- <div>
-              <v-chip class="ma-2" color="" text-color=""> primary </v-chip>
-            </div>
-            <div>
-              <v-chip class="ma-2" color="green" text-color="white">
-                Green Chip
-              </v-chip>
-            </div> -->
           </div>
           <v-text-field
             v-model="text"
@@ -86,7 +79,7 @@
             label="輸入訊息"
             background-color="white"
             append-outer-icon="mdi-send"
-            class="mr-4"
+            class="mt-6 mr-4"
             @click:append-outer="sendMessage"
             @keydown.enter="sendMessage"
           ></v-text-field>
@@ -165,7 +158,7 @@ export default {
       }
     },
     isMe(id) {
-      return id === this.user._id;
+      return id === this.user.userId;
     },
     async sendMessage() {
       if (this.sending || this.text.length === 0 || this.id.length === 0)
@@ -243,6 +236,11 @@ export default {
   height: 50vh;
 }
 .content {
-  height: 90%;
+  height: 438px;
+  overflow-y: scroll;
+}
+.hidden {
+  height: 540px;
+  overflow: hidden;
 }
 </style>

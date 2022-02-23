@@ -106,7 +106,7 @@ export default {
     title: "",
     content: "",
     img: "",
-    text: null,
+    text: "叮咚叮咚",
     sending: false,
   }),
   methods: {
