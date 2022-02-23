@@ -168,6 +168,7 @@
   </div>
 </template>
 <script>
+import router from "@/router";
 export default {
   name: "MemberPost",
   data: () => ({
@@ -266,6 +267,7 @@ export default {
         this.product[5].value = "";
         this.title = "";
         this.content = "";
+        router.push("/memberpage/postedit");
       } catch (error) {
         this.reText = "上架失敗";
         this.reColor = "red";

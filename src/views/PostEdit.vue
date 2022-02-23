@@ -380,6 +380,7 @@ export default {
         this.reColor = "success";
         this.snackbar2 = true;
         this.dialog = false;
+        this.reload();
       } catch (error) {
         this.reText = "error";
         this.reColor = "red";
@@ -390,7 +391,6 @@ export default {
       const bigform = {
         sale: e,
       };
-      console.log(bigform);
       const fd = new FormData();
       for (const key in bigform) {
         if (key !== "_id") {
@@ -412,6 +412,7 @@ export default {
         this.reColor = "success";
         this.snackbar2 = true;
         this.dialog = false;
+        this.reload();
       } catch (error) {
         this.reText = "error";
         this.reColor = "red";
@@ -422,9 +423,22 @@ export default {
       try {
         await this.api.delete("/products/" + this.products[this.DelIndex]._id);
         this.dialog2 = false;
+        this.reload();
       } catch (error) {
         console.log(error);
         alert("刪除失敗");
+      }
+    },
+    async reload() {
+      try {
+        const { data } = await this.api.get("/products/" + this.userId, {
+          headers: {
+            authorization: "Bearer " + this.token,
+          },
+        });
+        this.products = data.result;
+      } catch (error) {
+        alert("網路錯誤");
       }
     },
   },
@@ -439,32 +453,6 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
-  },
-  watch: {
-    dialog: async function () {
-      try {
-        const { data } = await this.api.get("/products/" + this.userId, {
-          headers: {
-            authorization: "Bearer " + this.token,
-          },
-        });
-        this.products = data.result;
-      } catch (error) {
-        alert("網路錯誤");
-      }
-    },
-    dialog2: async function () {
-      try {
-        const { data } = await this.api.get("/products/" + this.userId, {
-          headers: {
-            authorization: "Bearer " + this.token,
-          },
-        });
-        this.products = data.result;
-      } catch (error) {
-        alert("網路錯誤");
-      }
-    },
   },
   computed: {
     userId() {

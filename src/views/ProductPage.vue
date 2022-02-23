@@ -106,13 +106,37 @@ export default {
     title: "",
     content: "",
     img: "",
+    text: null,
+    sending: false,
   }),
   methods: {
-    sendMessage() {
+    async sendMessage() {
       if (!this.user.isLogin) {
         alert("請先登入");
       } else {
-        // 這邊要POST
+        if (this.sending || this.products.userId.length === 0) return;
+        this.sending = true;
+        try {
+          await this.api.post(
+            `/chats/members/${this.products._id}/messages`,
+            {
+              text: this.text,
+              product: {
+                userId: this.products.userId,
+                title: this.products.name,
+                image: this.products.image,
+              },
+            },
+            {
+              headers: {
+                authorization: "Bearer " + this.user.token,
+              },
+            }
+          );
+        } catch (error) {
+          console.log(error);
+        }
+        this.sending = false;
       }
       router.push("/memberpage/membermessage");
     },
