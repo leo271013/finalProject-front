@@ -3,7 +3,7 @@
     <v-row class="mt-12 mx-8" justify="center">
       <v-col :cols="3">
         <v-text-field
-          label="搜尋"
+          label="搜尋商品名稱"
           v-model="searchtext"
           color="pink"
           class="mb-2"
@@ -116,19 +116,7 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        this.productQ = Math.floor(this.products.length / 8) + 1;
-        this.productP = [];
-        if (this.products.length > 8) {
-          for (let i = 0; i < 8; i++) {
-            let start = (this.page - 1) * 8;
-            this.productP.push(this.products[start + i]);
-          }
-        } else {
-          for (let i = 0; i < this.products.length; i++) {
-            let start = (this.page - 1) * 8;
-            this.productP.push(this.products[start + i]);
-          }
-        }
+        this.productQ = Math.floor(this.search.length / 8) + 1;
       } else {
         try {
           const { data } = await this.api.get("/showProducts/" + name);
@@ -136,19 +124,7 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        this.productQ = Math.floor(this.products.length / 8) + 1;
-        this.productP = [];
-        if (this.products.length > 8) {
-          for (let i = 0; i < 8; i++) {
-            let start = (this.page - 1) * 8;
-            this.productP.push(this.products[start + i]);
-          }
-        } else {
-          for (let i = 0; i < this.products.length; i++) {
-            let start = (this.page - 1) * 8;
-            this.productP.push(this.products[start + i]);
-          }
-        }
+        this.productQ = Math.floor(this.search.length / 8) + 1;
       }
     },
     into(e) {
@@ -162,41 +138,38 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
-    this.productQ = Math.floor(this.products.length / 8) + 1;
-    if (this.products.length > 8) {
-      for (let i = 0; i < 8; i++) {
-        let start = (this.page - 1) * 8;
-        this.productP.push(this.products[start + i]);
-      }
-    } else {
-      for (let i = 0; i < this.products.length; i++) {
-        let start = (this.page - 1) * 8;
-        this.productP.push(this.products[start + i]);
-      }
-    }
+    this.productQ = Math.floor(this.search.length / 8) + 1;
   },
   computed: {
     search() {
-      return this.products.filter((item) => {
+      let searching = this.products.filter((item) => {
         if (item.name.toLowerCase().includes(this.searchtext.toLowerCase())) {
+          return true;
+        }
+      });
+      return searching.filter((item, index) => {
+        if (searching.length < 8) {
+          return true;
+        } else if (
+          searching.length > 8 &&
+          index >= (this.page - 1) * 8 &&
+          index < (this.page - 1) * 8 + 8
+        ) {
           return true;
         }
       });
     },
   },
   watch: {
-    page: function (newN) {
-      this.productP = [];
-      let start = (newN - 1) * 8;
-      if (newN === 1) {
-        for (let i = 0; i < 8; i++) {
-          this.productP.push(this.products[start + i]);
-        }
-      } else {
-        for (let i = 0; i < this.products.length - start; i++) {
-          this.productP.push(this.products[start + i]);
-        }
+    search: function (newV, oldV) {
+      if (this.searchtext !== "") {
+        this.productQ = Math.floor(this.search.length / 8) + 1;
+      } else if (newV > oldV && this.searchtext === "") {
+        this.productQ = Math.floor(this.search.length / 8) + 1;
       }
+    },
+    searchtext: function () {
+      this.page = 1;
     },
   },
 };

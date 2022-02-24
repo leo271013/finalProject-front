@@ -101,6 +101,7 @@ export default {
     selected: undefined,
     users: [],
     id: "",
+    productId: "",
   }),
   computed: {
     user() {
@@ -112,17 +113,22 @@ export default {
   },
   methods: {
     async select(item) {
-      this.id = item._id;
+      this.id = item.product[0]._id;
+      this.productId = item.product[0].userId;
       if (item._id.length === 0) return;
       try {
-        const { data } = await this.api.get("/chats/members/" + item._id, {
-          headers: {
-            authorization: "Bearer " + this.user.token,
-          },
-        });
+        const { data } = await this.api.get(
+          "/chats/members/" + item.product[0]._id,
+          {
+            headers: {
+              authorization: "Bearer " + this.user.token,
+            },
+          }
+        );
         if (data.result.length === 0) {
           this.fetchOldest = true;
         } else {
+          console.log(data);
           this.messages = data.result;
         }
         this.timer = setInterval(this.fetchNew(item), 3000);
@@ -167,7 +173,12 @@ export default {
       try {
         const { data } = await this.api.post(
           `/chats/members/${this.id}/messages`,
-          { text: this.text },
+          {
+            text: this.text,
+            product: {
+              userId: this.productId,
+            },
+          },
           {
             headers: {
               authorization: "Bearer " + this.user.token,
