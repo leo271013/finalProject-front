@@ -1,13 +1,13 @@
 <template>
   <div class="PostEdit">
-    <v-card shaped class="mt-16">
-      <v-toolbar dark flat shaped color="red">
-        <v-toolbar-title class="px-2">上架商品編輯</v-toolbar-title>
+    <v-card class="mt-12">
+      <v-toolbar flat class="pink--text">
+        <v-toolbar-title class="px-2 borderEdit">上架商品編輯</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-dialog v-model="dialog" width="600px">
         <template v-slot:activator="{ on, attrs }">
-          <v-list flat subheader three-line class="pb-0">
+          <v-list flat subheader three-line class="pb-0 listHeight">
             <v-subheader>商品列表</v-subheader>
             <div
               v-for="(productItem, index) in products"
@@ -29,7 +29,7 @@
                 <v-list-item-action>
                   <v-btn
                     outlined
-                    color="orange"
+                    color="grey"
                     class="mt-3 mr-4"
                     v-bind="attrs"
                     v-on="on"
@@ -59,14 +59,8 @@
                   </v-btn>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-btn
-                    dark
-                    color="red"
-                    class="mt-3 ml-8"
-                    @click="openDel(index)"
-                  >
-                    <v-icon left> mdi-trash-can </v-icon>
-                    刪除
+                  <v-btn dark color="red" class="mt-3" @click="openDel(index)">
+                    <v-icon small> mdi-trash-can </v-icon>
                   </v-btn>
                 </v-list-item-action>
               </v-list-item>
@@ -474,5 +468,23 @@ export default {
 .inputer {
   width: 300px;
   height: 300px;
+}
+.borderEdit {
+  border-left: 10px solid #e91e63;
+}
+.listHeight {
+  height: 499px !important;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #e91e63;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    background-color: #f5f5f5;
+  }
 }
 </style>

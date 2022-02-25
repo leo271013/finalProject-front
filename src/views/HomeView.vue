@@ -182,6 +182,6 @@ export default {
   color: white !important;
 }
 .colHeight {
-  height: 550px;
+  height: 565px;
 }
 </style>

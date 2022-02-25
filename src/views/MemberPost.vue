@@ -290,6 +290,17 @@ export default {
   height: 70vh;
   overflow-y: scroll;
   background: rgba(202, 131, 0, 0.103);
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #e91e63;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    background-color: #f5f5f5;
+  }
 }
 .inputer {
   width: 400px;

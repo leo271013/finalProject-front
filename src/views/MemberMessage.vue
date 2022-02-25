@@ -1,17 +1,25 @@
 <template>
   <div class="MemberMessage">
-    <v-card shaped color="orange lighten-5" class="mt-16">
+    <v-card color="orange lighten-5" class="mt-16">
       <v-row class="hidden">
         <v-col cols="4" class="py-0">
-          <v-toolbar color="orange" dark flat shaped>
-            <v-toolbar-title class="px-2">訊息</v-toolbar-title>
+          <v-toolbar flat>
+            <v-toolbar-title class="px-2 borderMessage pink--text"
+              >訊息</v-toolbar-title
+            >
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-list three-line class="chat pa-0">
             <v-list-item-group>
-              <template v-for="item in items">
+              <template v-for="(item, index) in items">
                 <v-divider :key="item._id"></v-divider>
-                <v-list-item :key="item.title" @click="select(item)">
+                <v-list-item
+                  :key="item.title"
+                  @click="select(item)"
+                  :color="
+                    item.members[0] === user.userId ? '#F44336' : '#FF9800'
+                  "
+                >
                   <v-list-item-avatar tile size="75">
                     <v-img :src="item.product[0].image"></v-img>
                   </v-list-item-avatar>
@@ -20,6 +28,15 @@
                       class="text-h6"
                       v-html="item.product[0].title"
                     ></v-list-item-title>
+                    <v-list-item-subtitle
+                      :style="{
+                        color:
+                          item.members[0] === user.userId
+                            ? '#F44336'
+                            : '#FF9800',
+                      }"
+                      >{{ info[index].userName }}</v-list-item-subtitle
+                    >
                   </v-list-item-content>
                 </v-list-item>
               </template>
@@ -49,12 +66,7 @@
               align-center
             >
               <v-avatar class="mx-4"
-                ><v-img
-                  :src="
-                    'https://source.boringavatars.com/beam/120/' +
-                    message.sender
-                  "
-                ></v-img></v-avatar
+                ><v-img :src="messageImg(message.sender)"></v-img></v-avatar
               ><v-tooltip top
                 ><template v-slot:activator="{ on, attrs }"
                   ><v-chip
@@ -102,6 +114,7 @@ export default {
     users: [],
     id: "",
     productId: "",
+    info: [],
   }),
   computed: {
     user() {
@@ -114,7 +127,7 @@ export default {
   methods: {
     async select(item) {
       this.id = item.product[0]._id;
-      this.productId = item.product[0].userId;
+      this.productId = item.product[0].userId[0];
       if (item._id.length === 0) return;
       try {
         const { data } = await this.api.get(
@@ -128,7 +141,6 @@ export default {
         if (data.result.length === 0) {
           this.fetchOldest = true;
         } else {
-          console.log(data);
           this.messages = data.result;
         }
         this.timer = setInterval(this.fetchNew(item), 3000);
@@ -215,6 +227,17 @@ export default {
       }
       this.fetchingOld = false;
     },
+    messageImg(messageUser) {
+      if (messageUser === this.user.userId) {
+        return this.user.userImg;
+      } else {
+        for (const i in this.info) {
+          if (messageUser === this.info[i]._id) {
+            return this.info[i].image;
+          }
+        }
+      }
+    },
   },
   destroyed() {
     clearInterval(this.timer);
@@ -231,12 +254,31 @@ export default {
         }
       );
       this.items = data.result;
+      for (const item in this.items) {
+        if (this.items[item].members[0] !== this.user.userId) {
+          try {
+            const { data } = await this.api.get(
+              "/users/" + this.items[item].members[0]
+            );
+            data.info.userName = "來自買家 : " + data.info.userName;
+            this.info.push(data.info);
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          try {
+            const { data } = await this.api.get(
+              "/users/" + this.items[item].members[1]
+            );
+            data.info.userName = "傳自賣家 : " + data.info.userName;
+            this.info.push(data.info);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
     } catch (error) {
-      this.$swal({
-        icon: "error",
-        title: "失敗",
-        text: "取得使用者失敗",
-      });
+      alert("網路不穩定");
     }
   },
 };
@@ -244,14 +286,39 @@ export default {
 <style lang="scss" scoped>
 .chat {
   overflow-y: scroll;
-  height: 50vh;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #e91e63;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    background-color: #f5f5f5;
+  }
 }
 .content {
   height: 438px;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #e91e63;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    background-color: #f5f5f5;
+  }
 }
 .hidden {
   height: 540px;
   overflow: hidden;
+}
+.borderMessage {
+  border-left: 10px solid #e91e63;
 }
 </style>
