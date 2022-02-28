@@ -55,7 +55,7 @@
                   <v-list-item-group>
                     <span v-for="(list, index) in lists" :key="index">
                       <v-list-item
-                        v-if="index == 2"
+                        v-if="index == 3"
                         @click="logout"
                         class="red--text"
                       >
@@ -63,12 +63,16 @@
                           lists[index].name
                         }}</v-list-item-title>
                       </v-list-item>
-                      <v-list-item v-else :to="lists[index].url">
+                      <v-list-item
+                        v-else
+                        :to="lists[index].url"
+                        class="orange--text text--darken-2"
+                      >
                         <v-list-item-title>{{
                           lists[index].name
                         }}</v-list-item-title>
                       </v-list-item>
-                      <v-divider v-if="index == 1"></v-divider>
+                      <v-divider v-if="index == 2"></v-divider>
                     </span>
                   </v-list-item-group>
                 </v-list>
@@ -302,6 +306,7 @@ export default {
     logining: true,
     lists: [
       { name: "商品刊登", url: "/memberpage/memberpost" },
+      { name: "上架商品編輯", url: "/memberpage/postedit" },
       { name: "訊息", url: "/memberpage/membermessage" },
       { name: "會員登出" },
     ],

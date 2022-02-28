@@ -299,6 +299,7 @@ export default {
   }
   &::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
     background-color: #f5f5f5;
   }
 }

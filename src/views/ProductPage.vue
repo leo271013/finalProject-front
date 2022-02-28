@@ -6,15 +6,17 @@
         <v-col cols="6"><v-img :src="img" width="500"></v-img></v-col>
         <v-col cols="4" class="ml-16"
           ><v-list flat>
-            <v-subheader class="text-h4 mb-8 pink--text">商品內容</v-subheader>
+            <v-subheader class="text-h4 mb-8 pink--text borderEdit"
+              >商品內容</v-subheader
+            >
             <v-list-item v-for="item in product" :key="item.title">
-              <v-list-item-icon>
-                <v-icon></v-icon>
+              <v-list-item-icon class="mx-0">
+                <v-icon color="pink">mdi-circle-small</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title class="text-h5"
-                  >{{ item.title }} :
-                  <span class="text-h6">
+                  >{{ item.title }}:
+                  <span class="text-h6 ml-2">
                     {{ item.content }}</span
                   ></v-list-item-title
                 >
@@ -23,13 +25,20 @@
           </v-list>
           <v-btn
             block
-            color="success"
+            dark
+            color="orange darken-2"
             class="mt-6"
             @click="sendMessage()"
             :disabled="isMe"
             >聯絡賣家</v-btn
-          ><v-btn v-if="user.isAdmin" outlined color="red" class="mt-16"
-            >下架</v-btn
+          ><v-btn
+            v-if="user.isAdmin"
+            block
+            outlined
+            color="red"
+            class="mt-6"
+            @click="unsell"
+            >違規下架</v-btn
           ></v-col
         >
       </v-row>
@@ -38,7 +47,9 @@
         <v-col>
           <template>
             <v-card flat class="mx-auto transparent">
-              <v-card-title class="text-h4">商品介紹</v-card-title>
+              <v-card-title class="text-h4 pink--text borderEdit py-0 mb-16"
+                >商品介紹</v-card-title
+              >
               <v-card flat class="mx-auto" width="600">
                 <v-carousel
                   cycle
@@ -140,6 +151,44 @@ export default {
       }
       router.push("/memberpage/membermessage");
     },
+    async unsell() {
+      const bigform = {
+        sale: false,
+      };
+      const fd = new FormData();
+      for (const key in bigform) {
+        if (key !== "_id") {
+          fd.append(key, bigform[key]);
+        }
+      }
+      try {
+        await this.api.patch("/products/" + this.products._id, fd, {
+          headers: {
+            authorization: "Bearer " + this.token,
+          },
+        });
+        alert("下架成功");
+        await this.api.post(
+          `/chats/members/${this.products._id}/messages`,
+          {
+            text: "因違反規定，管理員已將您的商品下架，請修改後重新上架",
+            product: {
+              userId: this.products.userId,
+              title: this.products.name,
+              image: this.products.image,
+            },
+          },
+          {
+            headers: {
+              authorization: "Bearer " + this.user.token,
+            },
+          }
+        );
+        router.push("/");
+      } catch (error) {
+        alert("下架失敗");
+      }
+    },
   },
   computed: {
     products() {
@@ -167,3 +216,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.borderEdit {
+  border-left: 10px solid #e91e63;
+}
+</style>

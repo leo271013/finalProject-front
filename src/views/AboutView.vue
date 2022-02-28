@@ -6,9 +6,9 @@
           class="animate__animated animate__bounceInDown"
           src="~../assets/chtLogo.png"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'" /><img
-          class="ml-12"
+          class="ml-9"
           width="400"
-          src="~../assets/logo.png"
+          src="~../assets/oldlogo.svg"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
       /></v-col>
       <v-col class="animate__animated animate__fadeIn animate__fast">

@@ -17,7 +17,11 @@
                   :key="item.title"
                   @click="select(item)"
                   :color="
-                    item.members[0] === user.userId ? '#F44336' : '#FF9800'
+                    info[index].userName === '來自管理員'
+                      ? '#F44336'
+                      : item.members[0] === user.userId
+                      ? 'grey'
+                      : 'grey'
                   "
                 >
                   <v-list-item-avatar tile size="75">
@@ -26,14 +30,16 @@
                   <v-list-item-content>
                     <v-list-item-title
                       class="text-h6"
-                      v-html="item.product[0].title"
+                      v-html="'商品名稱: ' + item.product[0].title"
                     ></v-list-item-title>
                     <v-list-item-subtitle
                       :style="{
                         color:
-                          item.members[0] === user.userId
+                          info[index].userName === '來自管理員'
                             ? '#F44336'
-                            : '#FF9800',
+                            : item.members[0] === user.userId
+                            ? 'grey'
+                            : 'grey',
                       }"
                       >{{ info[index].userName }}</v-list-item-subtitle
                     >
@@ -45,7 +51,7 @@
         </v-col>
         <!-- <v-divider vertical></v-divider> -->
         <v-col v-if="id.length !== 0" class="pr-8">
-          <div class="content">
+          <div ref="toBottom" class="content">
             <div class="d-flex justify-center">
               <v-btn
                 outlined
@@ -76,6 +82,7 @@
                     :color="
                       isMe(message.sender) ? 'pink' : 'deep-orange darken-1'
                     "
+                    class="mt-4"
                     >{{ message.text }}</v-chip
                   ></template
                 ><span>{{
@@ -86,6 +93,7 @@
           </div>
           <v-text-field
             v-model="text"
+            counter="40"
             clearable
             outlined
             label="輸入訊息"
@@ -171,6 +179,7 @@ export default {
             }
           });
         }
+        this.$refs.toBottom.scrollTop = this.$refs.toBottom.scrollHeight;
       } catch (error) {
         console.log(error);
       }
@@ -179,6 +188,10 @@ export default {
       return id === this.user.userId;
     },
     async sendMessage() {
+      if (this.text.length > 40) {
+        alert("訊息請勿超過40個字");
+        return;
+      }
       if (this.sending || this.text.length === 0 || this.id.length === 0)
         return;
       this.sending = true;
@@ -276,6 +289,9 @@ export default {
             console.log(error);
           }
         }
+        if (this.info[item].userName === "來自買家 : 管理員") {
+          this.info[item].userName = "來自管理員";
+        }
       }
     } catch (error) {
       alert("網路不穩定");
@@ -296,6 +312,7 @@ export default {
   }
   &::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
     background-color: #f5f5f5;
   }
 }
@@ -311,11 +328,12 @@ export default {
   }
   &::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+    box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
     background-color: #f5f5f5;
   }
 }
 .hidden {
-  height: 540px;
+  height: 560px;
   overflow: hidden;
 }
 .borderMessage {

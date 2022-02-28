@@ -15,13 +15,14 @@
           <v-col :cols="2">
             <template>
               <v-card max-width="120" class="ml-16">
-                <v-list nav class="text-center pa-0">
+                <v-list nav flat class="text-center pa-0">
                   <v-list-item-group mandatory>
                     <div v-for="(item, i) in items" :key="item[i]">
                       <v-list-item
                         class="mb-0"
                         color="pink"
                         @click="type(item)"
+                        active-class="select"
                       >
                         <v-list-item-content>
                           <v-list-item-title v-text="item"></v-list-item-title>
@@ -45,9 +46,10 @@
                     <template>
                       <v-card
                         max-width="250"
-                        max-height="280"
+                        height="280"
                         @click="into(product)"
                         hover
+                        class="overflow-hidden"
                       >
                         <template slot="progress">
                           <v-progress-linear
@@ -59,7 +61,7 @@
 
                         <v-img height="185" :src="product.image"></v-img>
 
-                        <v-card-title class="py-1">{{
+                        <v-card-title class="py-1 font-weight-bold">{{
                           product.name
                         }}</v-card-title>
 
@@ -116,7 +118,11 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (this.products.length > 8) {
+          this.productQ = Math.floor(this.search.length / 8) + 1;
+        } else {
+          this.productQ = 1;
+        }
       } else {
         try {
           const { data } = await this.api.get("/showProducts/" + name);
@@ -124,7 +130,11 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (this.products.length > 8) {
+          this.productQ = Math.floor(this.search.length / 8) + 1;
+        } else {
+          this.productQ = 1;
+        }
       }
     },
     into(e) {
@@ -138,7 +148,11 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
-    this.productQ = Math.floor(this.search.length / 8) + 1;
+    if (this.products.length > 8) {
+      this.productQ = Math.floor(this.search.length / 8) + 1;
+    } else {
+      this.productQ = 1;
+    }
   },
   computed: {
     search() {
@@ -151,7 +165,7 @@ export default {
         if (searching.length < 8) {
           return true;
         } else if (
-          searching.length > 8 &&
+          searching.length >= 8 &&
           index >= (this.page - 1) * 8 &&
           index < (this.page - 1) * 8 + 8
         ) {
@@ -163,9 +177,17 @@ export default {
   watch: {
     search: function (newV, oldV) {
       if (this.searchtext !== "") {
-        this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (this.products.length > 8) {
+          this.productQ = Math.floor(this.search.length / 8) + 1;
+        } else {
+          this.productQ = 1;
+        }
       } else if (newV > oldV && this.searchtext === "") {
-        this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (this.products.length > 8) {
+          this.productQ = Math.floor(this.search.length / 8) + 1;
+        } else {
+          this.productQ = 1;
+        }
       }
     },
     searchtext: function () {
@@ -183,5 +205,8 @@ export default {
 }
 .colHeight {
   height: 565px;
+}
+.select {
+  border-left: 10px solid #e91e63;
 }
 </style>

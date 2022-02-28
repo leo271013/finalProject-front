@@ -123,7 +123,12 @@ export default {
   }),
   methods: {
     updateInfo() {
-      this.$store.dispatch("updateInfo", this.NewuserImg);
+      if (this.userInfo.userName.includes("管理員")) {
+        alert("請勿以「管理員」作為暱稱");
+        this.userInfo.userName = "使用者";
+      } else {
+        this.$store.dispatch("updateInfo", this.NewuserImg);
+      }
     },
     valid() {
       this.$refs.form.validate() ? (this.lock = false) : (this.lock = true);
