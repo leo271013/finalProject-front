@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-row class="mt-12 mx-8" justify="center">
+    <v-row class="mt-12 mx-8 pt-sm-8 pt-md-0" justify="center">
       <v-col :cols="3">
         <v-text-field
           label="搜尋商品名稱"
@@ -14,7 +14,7 @@
         ><v-row>
           <v-col :cols="2">
             <template>
-              <v-card max-width="120" class="ml-16">
+              <v-card max-width="120" class="ml-lg-16">
                 <v-list nav flat class="text-center pa-0">
                   <v-list-item-group mandatory>
                     <div v-for="(item, i) in items" :key="item[i]">
@@ -35,21 +35,17 @@
               </v-card> </template
           ></v-col>
           <v-col>
-            <v-row justify="center">
+            <v-row>
               <v-col :cols="12">
-                <v-row class="px-16">
-                  <v-col
-                    :cols="3"
-                    v-for="product in search"
-                    :key="product.name"
-                  >
+                <v-row class="px-lg-16">
+                  <v-col :lg="3" v-for="product in search" :key="product.name">
                     <template>
                       <v-card
                         max-width="250"
                         height="280"
                         @click="into(product)"
                         hover
-                        class="overflow-hidden"
+                        class="overflow-hidden mx-sm-auto"
                       >
                         <template slot="progress">
                           <v-progress-linear
@@ -75,8 +71,8 @@
           </v-col></v-row
         ></v-col
       >
-      <v-col cols="12">
-        <div class="mt-6">
+      <v-col cols="12" class="mt-sm-4">
+        <div class="mt-md-6 mt-sm-12 mb-sm-8 mb-md-0">
           <v-pagination
             v-model="page"
             :length="productQ"

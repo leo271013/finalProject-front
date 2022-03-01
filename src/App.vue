@@ -2,8 +2,8 @@
   <v-app>
     <div id="bg" class="px-xl-16 pt-10">
       <v-app-bar elevation="1" fixed src="~./assets/bar.svg" height="110">
-        <router-link class="logo mt-6" to="/"
-          ><img src="~./assets/logo.svg" alt="logo" contain width="300"
+        <router-link class="logo mt-6 hidden-xs" to="/"
+          ><v-img src="~./assets/logo.svg" alt="logo" contain
         /></router-link>
         <v-dialog
           v-model="dialog"
@@ -12,24 +12,21 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-tabs
-              id="tab"
-              mobile-breakpoint
               right
               hide-slider
-              show-arrows
               dark
               height="80"
               class="mt-6"
               active-class="fontColor"
             >
               <v-tabs-slider></v-tabs-slider>
-              <v-tab class="px-6" to="/"> <h2>商品</h2> </v-tab>
-              <v-tab class="px-6" to="/grouppage" disabled>
+              <v-tab class="px-md-6" to="/"> <h2>商品</h2> </v-tab>
+              <v-tab class="px-md-6" to="/grouppage" disabled>
                 <h2>團體募集</h2>
               </v-tab>
 
               <v-tab
-                class="px-6 none"
+                class="px-md-6 none"
                 v-bind="attrs"
                 v-on="on"
                 v-show="!user.isLogin"
@@ -47,7 +44,12 @@
                 transition="fade-transition"
               >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-tab class="px-6" v-bind="attrs" v-on="on" to="/memberpage">
+                  <v-tab
+                    class="px-md-6"
+                    v-bind="attrs"
+                    v-on="on"
+                    to="/memberpage"
+                  >
                     <h2>會員專區</h2>
                   </v-tab>
                 </template>
@@ -77,7 +79,7 @@
                   </v-list-item-group>
                 </v-list>
               </v-menu>
-              <v-tab class="px-6" to="/about"> <h2>關於我們</h2> </v-tab>
+              <v-tab class="px-md-6" to="/about"> <h2>關於我們</h2> </v-tab>
             </v-tabs>
           </template>
 
@@ -194,7 +196,7 @@
           unchecked-text=" 🌞 "
           checkedBg="blue"
           uncheckedBg="white"
-          class="right ml-8 pr-12"
+          class="right ml-md-8 ml-sm-2 pr-12"
         />
       </v-app-bar>
       <template>
@@ -268,13 +270,12 @@
           </v-snackbar>
         </div>
       </template>
-      <!-- <hr class="line" /> -->
-      <v-main class="mt-8 px-16">
+      <v-main class="mt-8">
         <router-view />
       </v-main>
     </div>
     <v-footer padless color="transparent">
-      <v-col class="text-center footer mt-2" cols="12">
+      <v-col class="text-center footer" cols="12">
         Copyright © {{ new Date().getFullYear() }} <strong>Swapper</strong>. All
         rights reserved. 版權所有© {{ new Date().getFullYear() }}
         <strong>Swapper</strong>
@@ -375,30 +376,35 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#bg {
-  height: 100%;
-  // background: url("~./assets/test.png") fixed no-repeat top/cover;
-}
-.line {
-  border: 3px solid;
-  margin-top: 60px;
-  margin-left: 220px;
-  margin-right: 140px;
-  border-image: linear-gradient(90deg, #ff9800, #f44336) 30 30;
-}
 .logo {
-  margin-left: 210px;
+  width: 220px;
 }
-.right {
-  margin-right: 200px;
-}
-.fontColor {
-  color: white !important;
-}
-.none {
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-.footer {
-  color: rgba(128, 128, 128, 0.582);
+@media (min-width: 960px) {
+  #bg {
+    height: 100%;
+  }
+  .line {
+    border: 3px solid;
+    margin-top: 60px;
+    margin-left: 220px;
+    margin-right: 140px;
+    border-image: linear-gradient(90deg, #ff9800, #f44336) 30 30;
+  }
+  .logo {
+    width: 300px;
+    margin-left: 210px;
+  }
+  .right {
+    margin-right: 200px;
+  }
+  .fontColor {
+    color: white !important;
+  }
+  .none {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .footer {
+    color: rgba(128, 128, 128, 0.582);
+  }
 }
 </style>

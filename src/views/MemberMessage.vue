@@ -57,7 +57,7 @@
                 outlined
                 @click="fetchOld"
                 :disabled="fetchingOld"
-                v-if="!fetchOldest"
+                v-if="fetchOldest"
                 >載入更多</v-btn
               >
             </div>
