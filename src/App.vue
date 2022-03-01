@@ -274,7 +274,7 @@
         <router-view />
       </v-main>
     </div>
-    <v-footer padless color="transparent">
+    <v-footer padless color="transparent" class="bottom">
       <v-col class="text-center footer" cols="12">
         Copyright © {{ new Date().getFullYear() }} <strong>Swapper</strong>. All
         rights reserved. 版權所有© {{ new Date().getFullYear() }}
@@ -378,6 +378,14 @@ export default {
 <style lang="scss" scoped>
 .logo {
   width: 220px;
+}
+@media (max-width: 960px) {
+  .bottom {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 @media (min-width: 960px) {
   #bg {

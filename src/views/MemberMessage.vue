@@ -151,12 +151,12 @@ export default {
         } else {
           this.messages = data.result;
         }
-        this.timer = setInterval(this.fetchNew(item), 3000);
+        this.timer = setInterval(this.fetchNew, 3000);
       } catch (error) {
         console.log(error);
       }
     },
-    async fetchNew(item) {
+    async fetchNew() {
       try {
         const date = this.messages[this.messages.length - 1]?.date || "";
         const { data } = await this.api.get(
@@ -169,15 +169,6 @@ export default {
         );
         if (data.result.length > 0) {
           this.messages.push(...data.result);
-          Notification.requestPermission((permission) => {
-            if (permission === "granted") {
-              const notification = new Notification("聊天室有新訊息", {
-                body: `${item.account} 傳了 ${data.result.length} 個新訊息`,
-                icon: "https://cdn-icons.flaticon.com/png/512/2174/premium/2174653.png?token=exp=1643011533~hmac=4335fea76a9682e849c03394a9c0667e",
-              });
-              notification.onclick = () => {};
-            }
-          });
         }
         this.$refs.toBottom.scrollTop = this.$refs.toBottom.scrollHeight;
       } catch (error) {

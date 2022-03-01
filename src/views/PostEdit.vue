@@ -29,7 +29,6 @@
                 <v-list-item-action>
                   <v-btn
                     outlined
-                    color="grey"
                     class="mt-3 mr-4"
                     v-bind="attrs"
                     v-on="on"

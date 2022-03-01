@@ -1,6 +1,6 @@
 <template>
   <div class="about pt-md-16 pt-sm-0">
-    <v-row class="ma-sm-2 ma-md-16 pt-sm-2 pt-md-16 px-sm-16">
+    <v-row class="ma-sm-2 ma-md-16 pt-sm-12 pt-md-16 px-sm-16">
       <v-col class="pa-12 pb-sm-2"
         ><img
           class="animate__animated animate__bounceInDown ml-3"
