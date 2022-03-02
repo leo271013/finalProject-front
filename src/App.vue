@@ -274,7 +274,7 @@
         <router-view />
       </v-main>
     </div>
-    <v-footer padless color="transparent" class="bottom">
+    <v-footer padless color="white" class="bottom black--text" width="100%">
       <v-col class="text-center footer" cols="12">
         Copyright © {{ new Date().getFullYear() }} <strong>Swapper</strong>. All
         rights reserved. 版權所有© {{ new Date().getFullYear() }}

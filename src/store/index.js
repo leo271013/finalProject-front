@@ -47,6 +47,7 @@ export default new Vuex.Store({
       state.userInfo.userName = "";
       state.userInfo.aboutMe = "";
       state.userImg = "";
+      router.push("/");
     },
     getInfo(state, data) {
       state.userId = data._id;

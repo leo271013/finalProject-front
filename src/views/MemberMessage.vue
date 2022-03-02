@@ -28,10 +28,10 @@
                     <v-img :src="item.product[0].image"></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title
-                      class="text-h6"
-                      v-html="'商品名稱: ' + item.product[0].title"
-                    ></v-list-item-title>
+                    <v-list-item-title class="text-h6"
+                      ><span class="d-sm-none d-md-inline">商品名稱: </span
+                      >{{ item.product[0].title }}</v-list-item-title
+                    >
                     <v-list-item-subtitle
                       :style="{
                         color:
@@ -49,7 +49,6 @@
             </v-list-item-group>
           </v-list>
         </v-col>
-        <!-- <v-divider vertical></v-divider> -->
         <v-col v-if="id.length !== 0" class="pr-8">
           <div ref="toBottom" class="content">
             <div class="d-flex justify-center">

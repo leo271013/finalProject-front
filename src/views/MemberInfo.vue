@@ -1,6 +1,6 @@
 <template>
   <div class="MemberInfo">
-    <v-row class="pt-16">
+    <v-row class="pt-16" justify-sm="center" justify-md="start">
       <v-col cols="4" class="text-center">
         <v-btn outlined @click="imgedit = !imgedit" class="my-4 mx-16">{{
           btn

@@ -1,21 +1,27 @@
 <template>
-  <div class="productpage mx-8 px-8">
-    <div class="mt-16 mx-8 px-8">
+  <div class="productpage mx-md-8 px-md-8 pb-sm-16">
+    <div class="mt-16 mx-md-8 px-md-8 pl-sm-8">
       <v-breadcrumbs :items="address" large></v-breadcrumbs>
-      <v-row class="mt-8 ml-8">
-        <v-col cols="6"><v-img :src="img" width="500"></v-img></v-col>
-        <v-col cols="4" class="ml-16"
+      <v-row class="mt-8 ml-md-8">
+        <v-col cols="6" class="pt-sm-16"
+          ><v-img :src="img" width="500" class="mt-sm-8"></v-img
+        ></v-col>
+        <v-col md="4" sm="5" col class="ml-md-16"
           ><v-list flat>
-            <v-subheader class="text-h4 mb-8 pink--text borderEdit"
+            <v-subheader class="text-h4 mb-md-8 pink--text borderEdit"
               >商品內容</v-subheader
             >
-            <v-list-item v-for="item in product" :key="item.title">
+            <v-list-item
+              v-for="item in product"
+              :key="item.title"
+              class="ml-sm-2"
+            >
               <v-list-item-icon class="mx-0">
                 <v-icon color="pink">mdi-circle-small</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title class="text-h5"
-                  >{{ item.title }}:
+                  >{{ item.title }}:<br class="d-sm-block d-md-none" />
                   <span class="text-h6 ml-2">
                     {{ item.content }}</span
                   ></v-list-item-title

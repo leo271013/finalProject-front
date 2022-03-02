@@ -1,18 +1,37 @@
 <template>
   <div class="home">
     <v-row class="mt-12 mx-8 pt-sm-8 pt-md-0" justify="center">
+      <v-col cols="12" class="d-md-none">
+        <v-row justify="space-around">
+          <v-col cols="12">
+            <v-sheet class="py-4 px-1">
+              <v-chip-group mandatory active-class="red--text red">
+                <v-chip
+                  outlined
+                  v-for="tag in items"
+                  :key="tag"
+                  class="mx-auto"
+                  @click="type(tag)"
+                >
+                  {{ tag }}
+                </v-chip>
+              </v-chip-group>
+            </v-sheet>
+          </v-col>
+        </v-row></v-col
+      >
       <v-col :cols="3">
         <v-text-field
           label="搜尋商品名稱"
           v-model="searchtext"
           color="pink"
-          class="mb-2"
+          class="mb-md-2 mb-sm-8"
         >
         </v-text-field>
       </v-col>
       <v-col cols="12" class="pa-0 colHeight"
         ><v-row>
-          <v-col :cols="2">
+          <v-col :cols="2" class="d-sm-none d-md-block">
             <template>
               <v-card max-width="120" class="ml-lg-16">
                 <v-list nav flat class="text-center pa-0">
@@ -36,9 +55,14 @@
           ></v-col>
           <v-col>
             <v-row>
-              <v-col :cols="12">
+              <v-col :cols="12" class="overflow-auto">
                 <v-row class="px-lg-16">
-                  <v-col :lg="3" v-for="product in search" :key="product.name">
+                  <v-col
+                    sm="4"
+                    :lg="3"
+                    v-for="product in search"
+                    :key="product.name"
+                  >
                     <template>
                       <v-card
                         max-width="250"
@@ -114,10 +138,18 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        if (this.products.length > 8) {
-          this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (window.innerWidth <= 960) {
+          if (this.products.length > 6) {
+            this.productQ = Math.floor(this.search.length / 6) + 1;
+          } else {
+            this.productQ = 1;
+          }
         } else {
-          this.productQ = 1;
+          if (this.products.length > 8) {
+            this.productQ = Math.floor(this.search.length / 8) + 1;
+          } else {
+            this.productQ = 1;
+          }
         }
       } else {
         try {
@@ -126,10 +158,18 @@ export default {
         } catch (error) {
           alert("網路錯誤");
         }
-        if (this.products.length > 8) {
-          this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (window.innerWidth <= 960) {
+          if (this.products.length > 6) {
+            this.productQ = Math.floor(this.search.length / 6) + 1;
+          } else {
+            this.productQ = 1;
+          }
         } else {
-          this.productQ = 1;
+          if (this.products.length > 8) {
+            this.productQ = Math.floor(this.search.length / 8) + 1;
+          } else {
+            this.productQ = 1;
+          }
         }
       }
     },
@@ -144,10 +184,18 @@ export default {
     } catch (error) {
       alert("網路錯誤");
     }
-    if (this.products.length > 8) {
-      this.productQ = Math.floor(this.search.length / 8) + 1;
+    if (window.innerWidth <= 960) {
+      if (this.products.length > 6) {
+        this.productQ = Math.floor(this.search.length / 6) + 1;
+      } else {
+        this.productQ = 1;
+      }
     } else {
-      this.productQ = 1;
+      if (this.products.length > 8) {
+        this.productQ = Math.floor(this.search.length / 8) + 1;
+      } else {
+        this.productQ = 1;
+      }
     }
   },
   computed: {
@@ -158,14 +206,26 @@ export default {
         }
       });
       return searching.filter((item, index) => {
-        if (searching.length < 8) {
-          return true;
-        } else if (
-          searching.length >= 8 &&
-          index >= (this.page - 1) * 8 &&
-          index < (this.page - 1) * 8 + 8
-        ) {
-          return true;
+        if (window.innerWidth <= 960) {
+          if (searching.length < 6) {
+            return true;
+          } else if (
+            searching.length >= 6 &&
+            index >= (this.page - 1) * 6 &&
+            index < (this.page - 1) * 6 + 6
+          ) {
+            return true;
+          }
+        } else {
+          if (searching.length < 8) {
+            return true;
+          } else if (
+            searching.length >= 8 &&
+            index >= (this.page - 1) * 8 &&
+            index < (this.page - 1) * 8 + 8
+          ) {
+            return true;
+          }
         }
       });
     },
@@ -173,16 +233,32 @@ export default {
   watch: {
     search: function (newV, oldV) {
       if (this.searchtext !== "") {
-        if (this.products.length > 8) {
-          this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (window.innerWidth <= 960) {
+          if (this.products.length > 6) {
+            this.productQ = Math.floor(this.search.length / 6) + 1;
+          } else {
+            this.productQ = 1;
+          }
         } else {
-          this.productQ = 1;
+          if (this.products.length > 8) {
+            this.productQ = Math.floor(this.search.length / 8) + 1;
+          } else {
+            this.productQ = 1;
+          }
         }
       } else if (newV > oldV && this.searchtext === "") {
-        if (this.products.length > 8) {
-          this.productQ = Math.floor(this.search.length / 8) + 1;
+        if (window.innerWidth <= 960) {
+          if (this.products.length > 6) {
+            this.productQ = Math.floor(this.search.length / 6) + 1;
+          } else {
+            this.productQ = 1;
+          }
         } else {
-          this.productQ = 1;
+          if (this.products.length > 8) {
+            this.productQ = Math.floor(this.search.length / 8) + 1;
+          } else {
+            this.productQ = 1;
+          }
         }
       }
     },
@@ -199,10 +275,17 @@ export default {
 .white {
   color: white !important;
 }
-.colHeight {
-  height: 565px;
-}
 .select {
   border-left: 10px solid #e91e63;
+}
+@media (min-width: 960px) {
+  .colHeight {
+    height: 565px;
+  }
+}
+@media (max-width: 960px) {
+  .colHeight {
+    height: 565px;
+  }
 }
 </style>

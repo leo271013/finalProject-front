@@ -1,10 +1,10 @@
 <template>
   <div class="memberpost text-center">
     <div class="content">
-      <div class="mx-16">
+      <div class="mx-md-16 overflow-hidden">
         <v-form ref="bigform" v-model="valid">
           <v-row class="mt-8">
-            <v-col>
+            <v-col sm="12" md="auto">
               <img-inputer
                 class="inputer"
                 accept="image/*"
@@ -89,7 +89,7 @@
               </v-list></v-col
             >
           </v-row>
-          <v-divider class="my-12"></v-divider>
+          <v-divider class="my-12 d-sm-none d-md-block"></v-divider>
           <v-row>
             <v-col>
               <template>
