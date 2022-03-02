@@ -3,10 +3,9 @@
     <v-row class="ma-sm-2 ma-md-16 pt-sm-12 pt-md-16 px-sm-16">
       <v-col class="pa-md-12 pt-sm-12 pb-sm-8 text-center"
         ><img
-          class="animate__animated animate__bounceInDown ml-md-3"
+          class="animate__animated animate__bounceInDown"
           src="~../assets/chtLogo.png"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'" /><img
-          class="ml-md-16"
           width="400"
           src="~../assets/oldlogo.svg"
           :style="'filter: drop-shadow(2px 2px 1.5px gray)'"
