@@ -17,7 +17,7 @@
                   :key="item.title"
                   @click="select(item)"
                   :color="
-                    info[index].userName === '來自管理員'
+                    info[index] && info[index].userName === '來自管理員'
                       ? '#F44336'
                       : item.members[0] === user.userId
                       ? 'grey'
@@ -35,13 +35,15 @@
                     <v-list-item-subtitle
                       :style="{
                         color:
-                          info[index].userName === '來自管理員'
+                          info[index] && info[index].userName === '來自管理員'
                             ? '#F44336'
                             : item.members[0] === user.userId
                             ? 'grey'
                             : 'grey',
                       }"
-                      >{{ info[index].userName }}</v-list-item-subtitle
+                      >{{
+                        info[index] ? info[index].userName : ""
+                      }}</v-list-item-subtitle
                     >
                   </v-list-item-content>
                 </v-list-item>
@@ -276,7 +278,7 @@ export default {
               console.log(error);
             }
           }
-          if (this.info[item].userName === "來自買家 : 管理員") {
+          if (this.info[item]?.userName === "來自買家 : 管理員") {
             this.info[item].userName = "來自管理員";
           }
         }
