@@ -122,6 +122,7 @@ export default {
     id: "",
     productId: "",
     info: [],
+    inited: false,
   }),
   computed: {
     user() {
@@ -241,50 +242,66 @@ export default {
         }
       }
     },
+    async fetchList() {
+      if (!this.user.isLogin) return;
+      try {
+        const { data } = await this.api.get(
+          "/chats/members/list/" + this.user.userId,
+          {
+            headers: {
+              authorization: "Bearer " + this.user.token,
+            },
+          }
+        );
+        this.items = data.result;
+        for (const item in this.items) {
+          if (this.items[item].members[0] !== this.user.userId) {
+            try {
+              const { data } = await this.api.get(
+                "/users/" + this.items[item].members[0]
+              );
+              data.info.userName = "來自買家 : " + data.info.userName;
+              this.info.push(data.info);
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            try {
+              const { data } = await this.api.get(
+                "/users/" + this.items[item].members[1]
+              );
+              data.info.userName = "傳自賣家 : " + data.info.userName;
+              this.info.push(data.info);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          if (this.info[item].userName === "來自買家 : 管理員") {
+            this.info[item].userName = "來自管理員";
+          }
+        }
+      } catch (error) {
+        alert("網路不穩定");
+      }
+      this.inited = true;
+    },
   },
   destroyed() {
     clearInterval(this.timer);
   },
-  async mounted() {
-    if (!this.user.isLogin) return;
-    try {
-      const { data } = await this.api.get(
-        "/chats/members/list/" + this.user.userId,
-        {
-          headers: {
-            authorization: "Bearer " + this.user.token,
-          },
+  watch: {
+    user: {
+      handler() {
+        if (this.user.userId.length > 0 && !this.inited) {
+          this.fetchList();
         }
-      );
-      this.items = data.result;
-      for (const item in this.items) {
-        if (this.items[item].members[0] !== this.user.userId) {
-          try {
-            const { data } = await this.api.get(
-              "/users/" + this.items[item].members[0]
-            );
-            data.info.userName = "來自買家 : " + data.info.userName;
-            this.info.push(data.info);
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          try {
-            const { data } = await this.api.get(
-              "/users/" + this.items[item].members[1]
-            );
-            data.info.userName = "傳自賣家 : " + data.info.userName;
-            this.info.push(data.info);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        if (this.info[item].userName === "來自買家 : 管理員") {
-          this.info[item].userName = "來自管理員";
-        }
-      }
-    } catch (error) {
-      alert("網路不穩定");
+      },
+      deep: true,
+    },
+  },
+  created() {
+    if (this.user.userId.length > 0) {
+      this.fetchList();
     }
   },
 };
