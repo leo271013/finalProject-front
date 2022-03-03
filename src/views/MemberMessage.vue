@@ -245,7 +245,7 @@ export default {
   destroyed() {
     clearInterval(this.timer);
   },
-  async created() {
+  async mounted() {
     if (!this.user.isLogin) return;
     try {
       const { data } = await this.api.get(
