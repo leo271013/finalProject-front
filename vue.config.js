@@ -12,10 +12,12 @@ module.exports = {
     });
   },
   pwa: {
+    themeColor: "#e91e63",
     theme_color: "#e91e63",
     manifestOptions: {
       name: "Swapper",
       short_name: "Swapper",
+      themeColor: "#e91e63",
       theme_color: "#e91e63",
       background_color: "#e91e63",
       scope: "./",
