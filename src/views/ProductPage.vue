@@ -3,7 +3,7 @@
     <div class="mt-16 mx-md-8 px-md-8 pl-sm-8">
       <v-breadcrumbs :items="address" large></v-breadcrumbs>
       <v-row class="mt-8 ml-md-8">
-        <v-col cols="6" class="pt-sm-16"
+        <v-col cols="12" sm="6" class="pt-sm-16"
           ><v-img :src="img" width="500" class="mt-sm-8"></v-img
         ></v-col>
         <v-col md="4" sm="5" col class="ml-md-16"
@@ -49,7 +49,7 @@
         >
       </v-row>
       <v-divider class="my-12"></v-divider>
-      <v-row>
+      <v-row class="pb-16 pb-sm-0">
         <v-col>
           <template>
             <v-card flat class="mx-auto transparent">

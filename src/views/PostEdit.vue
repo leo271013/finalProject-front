@@ -1,6 +1,6 @@
 <template>
   <div class="PostEdit">
-    <v-card class="mt-12">
+    <v-card class="mt-sm-12">
       <v-toolbar flat class="pink--text">
         <v-toolbar-title class="px-2 borderEdit">上架商品編輯</v-toolbar-title>
         <v-spacer></v-spacer>

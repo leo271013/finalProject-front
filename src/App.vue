@@ -1,8 +1,18 @@
 <template>
   <v-app>
     <div id="bg" class="px-xl-16 pt-10">
-      <v-app-bar elevation="1" fixed src="~./assets/bar.svg" height="110">
-        <router-link class="logo mt-6 hidden-xs" to="/"
+      <v-app-bar
+        elevation="1"
+        fixed
+        src="~./assets/bar.svg"
+        :height="Appheight"
+      >
+        <v-app-bar-nav-icon
+          dark
+          @click="drawer = true"
+          class="d-sm-none"
+        ></v-app-bar-nav-icon>
+        <router-link class="logo mt-sm-6" to="/"
           ><v-img src="~./assets/logo.svg" alt="logo" contain
         /></router-link>
         <v-dialog
@@ -16,7 +26,7 @@
               hide-slider
               dark
               height="80"
-              class="mt-6"
+              class="mt-6 d-none d-sm-block"
               active-class="fontColor"
             >
               <v-tabs-slider></v-tabs-slider>
@@ -83,7 +93,7 @@
             </v-tabs>
           </template>
 
-          <v-card class="pa-8 text-center">
+          <v-card class="pa-2 pa-sm-8 text-center">
             <h2
               v-show="logining"
               class="animate__animated animate__fadeIn animate__fast"
@@ -199,6 +209,68 @@
           class="right ml-md-8 ml-sm-2 pr-12"
         />
       </v-app-bar>
+      <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-list nav dense>
+          <v-list-item-group
+            v-model="group"
+            active-class="pink--text text--accent-4"
+          >
+            <v-list-item to="/" exact>
+              <v-list-item-icon>
+                <v-icon>mdi-home</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>商品</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/grouppage" disabled exact>
+              <v-list-item-icon>
+                <v-icon>mdi-account-multiple</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>團體募集</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-show="!user.isLogin" @click="open" inactive>
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>會員登入</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-show="user.isLogin" to="/memberpage" exact>
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>會員專區</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              v-show="user.isLogin"
+              class="red--text"
+              @click="logout"
+            >
+              <v-list-item-icon>
+                <v-icon color="red">mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>會員登出</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <div class="px-4">
+          <v-img
+            class="mt-16 mb-6"
+            src="~./assets/oldlogo.svg"
+            alt="logo"
+            contain
+          />
+          <p>「Swapper 絲滑易物」為一手、二手物品的交流平台</p>
+          <p class="mt-16 font-italic font-weight-thin">
+            「你眼中的垃圾，可能是別人眼中的寶貝」
+          </p>
+          <p class="text-center mt-4">
+            聯絡管理員: <a href="mailto:majaja@gmail.com">majaja@gmail.com</a>
+          </p>
+        </div>
+      </v-navigation-drawer>
       <template>
         <div class="text-center">
           <v-snackbar
@@ -270,7 +342,7 @@
           </v-snackbar>
         </div>
       </template>
-      <v-main class="mt-8">
+      <v-main class="mt-sm-8">
         <router-view />
       </v-main>
     </div>
@@ -288,6 +360,9 @@
 export default {
   name: "App",
   data: () => ({
+    drawer: false,
+    group: null,
+    Appheight: 110,
     valid: true,
     form: {
       account: "",
@@ -321,6 +396,10 @@ export default {
     state: "",
   }),
   methods: {
+    open() {
+      this.dialog = true;
+      this.drawer = false;
+    },
     accountvalidate() {
       this.$refs.form.validate();
     },
@@ -358,6 +437,13 @@ export default {
       this.$store.dispatch("logout");
       this.snackbar3 = true;
     },
+    myEventHandler() {
+      if (window.innerWidth <= 450) {
+        this.Appheight = 50;
+      } else {
+        this.Appheight = 110;
+      }
+    },
   },
   computed: {
     user() {
@@ -372,12 +458,27 @@ export default {
   },
   async created() {
     this.$store.dispatch("getInfo");
+    window.addEventListener("resize", this.myEventHandler);
+    if (window.innerWidth <= 450) {
+      this.Appheight = 50;
+    } else {
+      this.Appheight = 110;
+    }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
   },
 };
 </script>
 <style lang="scss" scoped>
 .logo {
   width: 220px;
+  margin-left: 52px;
+}
+@media (max-width: 450px) {
+  .logo {
+    width: 170px;
+  }
 }
 @media (max-width: 960px) {
   .bottom {

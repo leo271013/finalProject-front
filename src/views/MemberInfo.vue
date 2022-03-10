@@ -1,7 +1,7 @@
 <template>
   <div class="MemberInfo">
-    <v-row class="pt-16" justify-sm="center" justify-md="start">
-      <v-col cols="4" class="text-center">
+    <v-row class="pt-sm-16" justify-sm="center" justify-md="start">
+      <v-col cols="12" sm="4" class="text-center">
         <v-btn outlined @click="imgedit = !imgedit" class="my-4 mx-16">{{
           btn
         }}</v-btn>
@@ -33,7 +33,7 @@
           exceed-size-text="檔案大小不能超過"
         ></img-inputer>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" sm="6">
         <v-card flat class="pa-8">
           <v-form ref="form">
             <p v-show="!edit">

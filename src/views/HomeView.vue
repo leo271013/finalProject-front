@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <v-row class="mt-12 mx-8 pt-sm-8 pt-md-0" justify="center">
-      <v-col cols="12" class="d-md-none">
+    <v-row class="mt-sm-12 mx-sm-8 pt-sm-8 pt-md-0" justify="center">
+      <v-col cols="12" class="d-md-none pb-0 pb-sm-3">
         <v-row justify="space-around">
-          <v-col cols="12">
-            <v-sheet class="py-4 px-1">
+          <v-col cols="12" class="pb-0 pb-sm-3">
+            <v-sheet class="pt-4 pb-sm-4 px-1">
               <v-chip-group mandatory active-class="red--text red">
                 <v-chip
                   outlined
@@ -20,7 +20,7 @@
           </v-col>
         </v-row></v-col
       >
-      <v-col :cols="3">
+      <v-col cols="8" sm="3">
         <v-text-field
           label="搜尋商品名稱"
           v-model="searchtext"
@@ -31,7 +31,7 @@
       </v-col>
       <v-col cols="12" class="pa-0 colHeight"
         ><v-row>
-          <v-col :cols="2" class="d-sm-none d-md-block">
+          <v-col :cols="2" class="d-none d-md-block">
             <template>
               <v-card max-width="120" class="ml-lg-16">
                 <v-list nav flat class="text-center pa-0">
@@ -62,6 +62,7 @@
                     :lg="3"
                     v-for="product in search"
                     :key="product.name"
+                    class="d-flex d-sm-block justify-center"
                   >
                     <template>
                       <v-card
@@ -69,7 +70,7 @@
                         height="280"
                         @click="into(product)"
                         hover
-                        class="overflow-hidden mx-sm-auto"
+                        class="overflow-hidden"
                       >
                         <template slot="progress">
                           <v-progress-linear
@@ -96,13 +97,14 @@
         ></v-col
       >
       <v-col cols="12" class="mt-sm-4">
-        <div class="mt-md-6 mt-sm-12 mb-sm-8 mb-md-0">
+        <div class="mt-md-6 mt-sm-12 mb-sm-8 mb-md-0 d-none d-sm-block">
           <v-pagination
             v-model="page"
             :length="productQ"
             color="pink"
-          ></v-pagination></div
-      ></v-col>
+          ></v-pagination>
+        </div>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -206,7 +208,9 @@ export default {
         }
       });
       return searching.filter((item, index) => {
-        if (window.innerWidth <= 960) {
+        if (window.innerWidth <= 450) {
+          return true;
+        } else if (window.innerWidth <= 960) {
           if (searching.length < 6) {
             return true;
           } else if (

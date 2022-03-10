@@ -1,22 +1,16 @@
 <template>
   <div class="memberpage">
     <v-row v-if="user.isLogin" class="mt-8 mx-md-16">
-      <v-col cols="12" class="d-sm-block d-md-none text-center">
+      <v-col cols="12" class="d-md-none text-center">
         <v-card>
-          <v-btn-toggle tile group>
-            <v-btn
-              x-large
-              v-for="(item, i) in items"
-              :key="i"
-              exact
-              :to="item.url"
-            >
+          <v-btn-toggle tile>
+            <v-btn v-for="(item, i) in items" :key="i" exact :to="item.url">
               {{ item.name }}
             </v-btn>
           </v-btn-toggle></v-card
         ></v-col
       >
-      <v-col :cols="2" class="mt-8 d-sm-none d-md-block">
+      <v-col :cols="2" class="mt-8 d-none d-md-block">
         <template>
           <v-card max-width="150" class="mt-16 transparent">
             <v-list flat class="text-center py-0">
@@ -33,7 +27,7 @@
             </v-list>
           </v-card> </template
       ></v-col>
-      <v-col class="pt-16"> <router-view /> </v-col>
+      <v-col class="pt-sm-16"> <router-view /> </v-col>
     </v-row>
     <div v-else class="mt-16 text-center"><h1>請先登入</h1></div>
   </div>

@@ -1,8 +1,67 @@
 <template>
   <div class="MemberMessage">
-    <v-card color="orange lighten-5" class="mt-16">
+    <v-dialog v-model="dialog">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">聊天室</span>
+        </v-card-title>
+        <div ref="toBottom" class="content">
+          <div class="d-flex justify-center">
+            <v-btn
+              outlined
+              @click="fetchOld"
+              :disabled="fetchingOld"
+              v-if="fetchOldest"
+              >載入更多</v-btn
+            >
+          </div>
+          <div
+            v-for="message in messages"
+            :key="message._id"
+            :class="{
+              'flex-row-reverse': isMe(message.sender),
+              'd-flex': true,
+              'my-4': true,
+            }"
+            align-center
+          >
+            <v-avatar class="mx-4"
+              ><v-img :src="messageImg(message.sender)"></v-img></v-avatar
+            ><v-tooltip top
+              ><template v-slot:activator="{ on, attrs }"
+                ><v-chip
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  :color="
+                    isMe(message.sender) ? 'pink' : 'deep-orange darken-1'
+                  "
+                  class="mt-4"
+                  >{{ message.text }}</v-chip
+                ></template
+              ><span>{{
+                new Date(message.date).toLocaleString()
+              }}</span></v-tooltip
+            >
+          </div>
+        </div>
+        <v-text-field
+          v-model="text"
+          counter="40"
+          clearable
+          outlined
+          label="輸入訊息"
+          background-color="white"
+          append-outer-icon="mdi-send"
+          class="mt-6 mr-4 ml-4 ml-sm-0"
+          @click:append-outer="sendMessage"
+          @keydown.enter="sendMessage"
+        ></v-text-field>
+      </v-card>
+    </v-dialog>
+    <v-card color="orange lighten-5" class="mt-sm-16">
       <v-row class="hidden">
-        <v-col cols="4" class="py-0">
+        <v-col cols="12" sm="4" class="py-0">
           <v-toolbar flat>
             <v-toolbar-title class="px-2 borderMessage pink--text"
               >訊息</v-toolbar-title
@@ -51,7 +110,7 @@
             </v-list-item-group>
           </v-list>
         </v-col>
-        <v-col v-if="id.length !== 0" class="pr-8">
+        <v-col v-if="id.length !== 0" class="pr-8 d-none d-sm-block">
           <div ref="toBottom" class="content">
             <div class="d-flex justify-center">
               <v-btn
@@ -112,6 +171,7 @@
 <script>
 export default {
   data: () => ({
+    dialog: false,
     items: [],
     text: "",
     sending: false,
@@ -152,6 +212,9 @@ export default {
           this.fetchOldest = true;
         } else {
           this.messages = data.result;
+          if (window.innerWidth <= 450) {
+            this.dialog = true;
+          }
         }
         this.timer = setInterval(this.fetchNew, 3000);
       } catch (error) {
